@@ -1,7 +1,8 @@
 # Project Inovation semester
 
 <img src="https://cdn.freebiesupply.com/logos/large/2x/hogeschool-utrecht-logo-png-transparent.png">
-### Team
+
+## Team
 
 | Naam               | Achtergrond | Functie       |
 | ------------------ | ----------- | ------------- |
@@ -12,4 +13,8 @@
 | Fabian Knoop       | TI          | Scrum-master  |
 | Quinten van Essen  | AI          | Developer     |
 
+## Opdrachtgever
+WailSalutemFoundation
+Contactpersoon: Rachid Kherrazi
+contact: Rachid.kherrazi@outlook.com
 
