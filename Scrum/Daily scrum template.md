@@ -1,4 +1,4 @@
-# Daily Scrum Template
+# Daily Scrum Template ✅
 
 **Sprint:** [Sprintnaam / nummer]  
 **Datum:** [YYYY-MM-DD]  
