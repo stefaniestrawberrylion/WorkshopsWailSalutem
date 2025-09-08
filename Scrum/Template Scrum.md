@@ -7,11 +7,14 @@
 
 ---
 
-| Teamlid  | 1. Wat heb je gisteren gedaan | 2. Wat ga je vandaag doen | 3. Zijn er blokkades | 4. Workload | 5. Gemoed | 6. Wil je nog wat kwijt |
-| -------- | ----------------------------- | ------------------------- | -------------------- | ----------- | --------- | ----------------------- |
-| [Naam 1] |                               |                           |                      |             |           |                         |
-| [Naam 2] |                               |                           |                      |             |           |                         |
-| [Naam 3] |                               |                           |                      |             |           |                         |
+| Teamlid    | 1. Wat heb je gisteren gedaan | 2. Wat ga je vandaag doen | 3. Zijn er blokkades | 4. Workload | 5. Gemoed | 6. Wil je nog wat kwijt |
+| ---------- | ----------------------------- | ------------------------- | -------------------- | ----------- | --------- | ----------------------- |
+| Mounir     |                               |                           |                      |             |           |                         |
+| Patrick    |                               |                           |                      |             |           |                         |
+| Shad       |                               |                           |                      |             |           |                         |
+| Quinten    |                               |                           |                      |             |           |                         |
+| Anne-l'ene |                               |                           |                      |             |           |                         |
+| Fabian     |                               |                           |                      |             |           |                         |
 
 ---
 
