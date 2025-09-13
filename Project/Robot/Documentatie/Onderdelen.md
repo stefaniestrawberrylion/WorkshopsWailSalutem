@@ -37,11 +37,15 @@ Voor de motor hebben we een *TB6612 H-bridge* nodig, dit om twee 5V DC motoren t
 ## Sensoren
 
 We hebben nodig voor de robot:
+
 -Een Camera
+
 -Een afstandsensor
 
 
 ## (tijdelijk)
 extra benodigdheden:
+
 -Batterij
+
 -Wielen
