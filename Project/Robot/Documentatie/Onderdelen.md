@@ -30,3 +30,18 @@ Natuurlijk dat we alle onderdelen er goed op kunnen verwerken. Maar ook dat het 
 Hierdoor had ik in gedachten om het mogelijk te maken dat we het zo maken dat we met 3 wielen het wagentje magen.
 Zo hoeft er een minder groot frame ge 3D print te worden, Hebben we een wiel minder nodig en kan er nog steeds met de 2 achterste wielen gestuurd worden.
 
+## Motor
+
+Voor de motor hebben we een *TB6612 H-bridge* nodig, dit om twee 5V DC motoren te besturen.
+
+## Sensoren
+
+We hebben nodig voor de robot:
+-Een Camera
+-Een afstandsensor
+
+
+## (tijdelijk)
+extra benodigdheden:
+-Batterij
+-Wielen
