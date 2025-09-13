@@ -19,3 +19,14 @@ https://github.com/becem-gharbi/esp-computer-vision
 FOMO:https://docs.edgeimpulse.com/studio/projects/learning-blocks/blocks/object-detection/fomo
 
 ESP-boards:https://docs.edgeimpulse.com/hardware/boards/espressif-esp32#using-with-other-esp32-boards
+
+---
+
+## Frame
+
+Beetje een notitie van wat belangrijk is voor het frame dat we gaan 3D printen
+
+Natuurlijk dat we alle onderdelen er goed op kunnen verwerken. Maar ook dat het goedkoop ge3D print kan worden.
+Hierdoor had ik in gedachten om het mogelijk te maken dat we het zo maken dat we met 3 wielen het wagentje magen.
+Zo hoeft er een minder groot frame ge 3D print te worden, Hebben we een wiel minder nodig en kan er nog steeds met de 2 achterste wielen gestuurd worden.
+
