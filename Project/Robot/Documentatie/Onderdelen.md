@@ -6,7 +6,7 @@ Voor deze robot hebben we gekozen voor open en makkelijk te gebruiken onderdelen
 # TODO/WORKINPROGRESS
 Wat hieronder staat is nog allemaal work in progress!!!
 
-## Controller
+## Controllers
 Voor de microcontroller van de robot zijn er een paar mogelijke opties
 
 De ESP32-S3 is een iets krachtigere ESP32, Hierdoor heeft deze net iets meer storage waardoor je hiermee wel AI modellen kan laden. andere opties zouden zijn de ESP-CAM of ESP-EYE. Waarvan bij de Eye devboard er ook bij staat genoteerd dat deze face recognition heeft. 
