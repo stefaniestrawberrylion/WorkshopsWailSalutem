@@ -39,13 +39,17 @@ Voor de motor hebben we een *TB6612 H-bridge* nodig, dit om twee 5V DC motoren t
 We hebben nodig voor de robot:
 
 -Een Camera
+We moeten dus kijken dat we die kunnen gebruiken met FOMO (Zoals hierboven beschreven)
+Waardoor hij de juiste pins moet hebben.
 
 -Een afstandsensor
+(Mogelijk een hele goedkope 90 Grade lidar ofzo??? Laten we hierover in gesprek gaan @shad)
 
 
 ## (tijdelijk)
 extra benodigdheden:
 
 -Batterij
+Natuurlijk genoeg voor een paar uur gebruik. Mogelijk kunnen we heroplaadbare AA's gebruiken ofzo, Laten we het hier samen nog over hebben @shad :)
 
 -Wielen
