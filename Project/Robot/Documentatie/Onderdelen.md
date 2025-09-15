@@ -20,6 +20,22 @@ FOMO:https://docs.edgeimpulse.com/studio/projects/learning-blocks/blocks/object-
 
 ESP-boards:https://docs.edgeimpulse.com/hardware/boards/espressif-esp32#using-with-other-esp32-boards
 
+ESP-CAM hebben we in het lab, Maar moeten we even kijken of deze gebaseerd is op een S3 en de PSRAM die deze heeft. Hij heeft wel een SD kaart. Mogelijk kunnen we onderzoeken wat we kunnen opslaan op deze SD kaart want misschien kunnen we daarmee de mogelijke modellen/Data voor de robot opslaan.
+
+| Ordering Code                 | Flash memory | PSRAM | Bruikbaar                                                         |
+| ----------------------------- | ------------ | ----- | ----------------------------------------------------------------- |
+| ESP32-S3-WROOM-2-N32R16V      | 32MB         | 16MB  | Zeker, Gericht op AI gebruik,Met AI instructieset, ideaal voor ML |
+| ESP32-S3-WROOM-2-N16R8V (EOL) | 16MB         | 8MB   | ja                                                                |
+| ESP32-S3-WROOM-2-N32R8V (EOL) | 32MB         | 8MB   | ja                                                                |
+| ESP32 (WROOM-32)              | 4MB          | Geen  | Niet                                                              |
+| ESP32 (WROVER-B)              | 4MB          | 4MB   | Mischien                                                          |
+| ESP32 (WROVER-E)              | 16MB         | 8MB   | Ja                                                                |
+| ESP32-CAM                     | 4MB          | 4MB   | Ja maar hierbij opletten hoe goed het draaid                      |
+| ESP32-C3 & ESP32-C3           | 4MB          | geen  | Niet bruikbaar                                                    |
+| ESP32-H2                      | 4MB          | geen  | Ook niet bruikbaar                                                |
+
+
+
 ---
 
 ## Frame
@@ -33,6 +49,7 @@ Zo hoeft er een minder groot frame ge 3D print te worden, Hebben we een wiel min
 ## Motor
 
 Voor de motor hebben we een *TB6612 H-bridge* nodig, dit om twee 5V DC motoren te besturen.
+- In het lab hebben we TT 130 motors die we kunnen gebruiken voor de wielen
 
 ## Sensoren
 
@@ -50,6 +67,8 @@ Waardoor hij de juiste pins moet hebben.
 extra benodigdheden:
 
 -Batterij
-Natuurlijk genoeg voor een paar uur gebruik. Mogelijk kunnen we heroplaadbare AA's gebruiken ofzo, Laten we het hier samen nog over hebben @shad :)
+Natuurlijk genoeg voor een sessie. Mogelijk kunnen we heroplaadbare AA's gebruiken ofzo, Laten we het hier samen nog over hebben @shad :)
+
+We moeten bespreken met de PO over hoe lang de robot op batterij moet kunnen draaien, want al wil je op 1 dag meerdere sessies houden, Moet hij of het lang vol kunnen houden of dus mogelijk dat je de batterij kan wisselen. Er zijn genoeg mogelijkheden die we kunnen onderzoeken
 
 -Wielen
