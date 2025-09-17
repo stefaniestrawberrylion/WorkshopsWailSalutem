@@ -69,6 +69,22 @@ extra benodigdheden:
 -Batterij
 Natuurlijk genoeg voor een sessie. Mogelijk kunnen we heroplaadbare AA's gebruiken ofzo, Laten we het hier samen nog over hebben @shad :)
 
+Zeker 2 uur gebruik, En oplaadbaar. In de robot. Niet met vervangbare of oplaadbare AA batterijen. 
+
 We moeten bespreken met de PO over hoe lang de robot op batterij moet kunnen draaien, want al wil je op 1 dag meerdere sessies houden, Moet hij of het lang vol kunnen houden of dus mogelijk dat je de batterij kan wisselen. Er zijn genoeg mogelijkheden die we kunnen onderzoeken
 
 -Wielen
+
+
+## Mogelijkheden robot
+
+- Rijden
+- Zien
+- Grijpen (Nice to have)
+- Iets kunnen vinden.
+- Minstens 2 uur kunnen rijden
+- Van die lijn volger sensor's
+- Ultrasone sesnors voor afstand
+- Camera (veel functionaliteit) - Emoties, CV en Objectrecognition
+
+
