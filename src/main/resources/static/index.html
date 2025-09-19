@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Workshop Keuze</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <div class="logo">
+        <img src="image/logo.png" alt="WAIL Salutem Logo">
+    </div>
+    <div class="search-container">
+        <span class="icon" id="searchIcon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Zoek workshops...">
+    </div>
+</header>
+
+<main>
+    <button class="workshop-button" id="addWorkshopBtn">Workshop toevoegen</button>
+    <div class="workshop-grid" id="workshopGrid"></div>
+</main>
+
+<!-- Workshop Popup -->
+<!-- Workshop Popup -->
+<div class="popup" id="workshopPopup">
+    <div class="popup-content">
+        <span class="close" id="closePopupBtn">&times;</span>
+        <h2>Nieuwe Workshop</h2>
+
+        <label for="workshopName">Naam</label>
+        <input type="text" id="workshopName" placeholder="Voer de workshop naam in">
+
+        <label for="workshopDesc">Beschrijving</label>
+        <textarea id="workshopDesc" placeholder="Voer een korte beschrijving in"></textarea>
+
+        <label for="workshopDuration">Duur</label>
+        <input type="time" id="workshopDuration" step="60" placeholder="Tussen de 1 en 2 uur">
+
+        <label for="workshopImage">Afbeelding</label>
+        <input type="file" id="workshopImage" accept="image/*">
+
+        <label for="workshopFiles">Download bestanden (optioneel)</label>
+        <input type="file" id="workshopFiles" multiple>
+        <div id="fileList"></div> <!-- aantal bestanden toegevoegd -->
+
+        <!-- Bestaande bestanden (alleen bij bewerken) -->
+        <div id="existingFileListContainer" style="display:none; margin-top:10px;">
+            <h4>Bestaande bestanden</h4>
+            <ul id="existingFileList"></ul>
+        </div>
+
+        <div class="popup-footer">
+            <button id="saveWorkshopBtn" class="btn-primary">Bevestigen</button>
+            <button id="closePopupBtnCancel" class="btn-secondary">Annuleren</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Workshop details popup -->
+<div id="workshopDetailsPopup" class="popup">
+    <div class="popup-content details">
+        <span id="closeDetailsPopupBtn" class="close">&times;</span>
+
+        <div class="details-header">
+            <img id="detailImage" src="" alt="Workshop afbeelding">
+            <div class="details-info">
+                <h3 id="detailName"></h3>
+                <div id="detailDesc" class="detail-desc"></div>
+                <div class="detail-duration">
+                    <span id="detailDuration"></span>
+                </div>
+            </div>
+        </div>
+
+        <div id="detailFiles" class="download-section" style="display:none;">
+            <p>Download bestanden:</p>
+            <ul id="detailFileList"></ul>
+        </div>
+
+        <div class="details-footer">
+            <button id="deleteWorkshopBtn">Verwijderen</button>
+        </div>
+    </div>
+</div>
+
+<!-- Afbeelding overlay -->
+<div id="imageOverlay" class="overlay">
+    <span id="closeOverlay">&times;</span>
+    <img id="overlayImg" src="" alt="Vergrote afbeelding">
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+
+
+

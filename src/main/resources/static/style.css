@@ -1,0 +1,414 @@
+/* Algemene stijlen */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #e6e6e6;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #5481B7;
+    color: white;
+    padding: 10px 20px;
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+header .logo img {
+    height: 80px;
+}
+
+header .title h1 {
+    margin: 0;
+    font-size: 18px;
+}
+
+header .title span {
+    font-weight: bold;
+}
+
+header .subtitle {
+    margin: 0;
+    font-size: 10px;
+}
+
+header .icons {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    font-size: 30px;
+}
+
+/* Main en Workshop overzicht */
+main {
+    padding: 20px;
+}
+
+.workshop-button {
+    padding: 10px 20px;
+    background-color: #5481B7;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+.workshop-button:hover {
+    background-color: #406495;
+}
+
+.workshop-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.workshop-card {
+    background-color: white;
+    width: 200px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.workshop-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    margin: auto;
+    display: block;
+}
+
+.workshop-card .info {
+    padding: 10px;
+    flex-grow: 1;
+}
+
+.workshop-card .info h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.workshop-card .info p {
+    font-size: 12px;
+    color: #555;
+}
+
+.workshop-card button {
+    background-color: #5481B7;
+    color: white;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 0 0 8px 8px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+.workshop-card button:hover {
+    background-color: #406495;
+}
+
+/* Popup overlay */
+
+/* Zorg dat time-input er hetzelfde uitziet als de andere inputs */
+.popup-content input[type="time"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: 0.3s;
+    -webkit-appearance: none; /* Chrome, Safari, Edge */
+    -moz-appearance: none;    /* Firefox */
+    appearance: none;
+    background-color: #fff;
+    color: #333;
+}
+
+.popup-content input[type="time"]:focus {
+    outline: none;
+    border-color: #5481B7;
+    box-shadow: 0 0 5px rgba(84,129,183,0.3);
+}
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Popup content */
+.popup-content {
+    position: relative;
+    background: #ffffff;
+    padding: 30px 25px;
+    border-radius: 12px;
+    width: 400px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    font-family: 'Arial', sans-serif;
+}
+
+/* Close icon */
+.popup .close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 10;
+}
+.popup .close:hover {
+    color: #5481B7;
+}
+
+/* Form labels */
+.popup-content label {
+    font-weight: 600;
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+/* Inputs and textarea */
+.popup-content input[type="text"],
+.popup-content input[type="number"],
+.popup-content input[type="file"],
+.popup-content textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: 0.3s;
+}
+.popup-content input:focus,
+.popup-content textarea:focus {
+    outline: none;
+    border-color: #5481B7;
+    box-shadow: 0 0 5px rgba(84,129,183,0.3);
+}
+.popup-content textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Buttons in popup */
+.popup-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+.popup-footer button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: 0.3s;
+}
+.btn-primary {
+    background-color: #5481B7;
+    color: white;
+}
+.btn-primary:hover {
+    background-color: #406495;
+}
+.btn-secondary {
+    background-color: #f0f0f0;
+    color: #333;
+}
+.btn-secondary:hover {
+    background-color: #ddd;
+}
+
+/* Detail pop-up */
+.popup-content.details {
+    width: 700px;
+    max-width: 95%;
+    padding: 30px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Header van details */
+.details-header {
+    display: flex;
+    gap: 25px;
+    align-items: flex-start;
+}
+.details-header img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Info sectie */
+.details-info {
+    flex: 1;
+}
+.details-info h3 {
+    margin-top: 0;
+    font-size: 22px;
+    color: #333;
+}
+.detail-duration {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+}
+.detail-desc {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    min-height: 100px;
+    max-height: 200px;  /* Vaste maximale hoogte */
+    margin-top: 15px;
+    line-height: 1.5;
+    color: #444;
+    overflow-y: auto;   /* Scrollbaar als inhoud groter is dan max-height */
+}
+
+/* Download links */
+.download-section {
+    margin-top: 20px;
+}
+.download-section p {
+    margin: 0 0 5px 0;
+    font-weight: 600;
+    color: #000000;
+}
+.download-section ul {
+    list-style: disc;
+    padding-left: 20px;
+    margin: 0;
+}
+.download-section a {
+    text-decoration: none;
+    color: #5481B7;
+    font-weight: 600;
+}
+.download-section a:hover {
+    text-decoration: underline;
+}
+
+/* Detail footer */
+.details-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+#deleteWorkshopBtn {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+#deleteWorkshopBtn:hover {
+    background-color: #c9302c;
+}
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.overlay img {
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.overlay #closeOverlay {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+
+.detail-desc {
+    white-space: pre-wrap; /* behoud enters */
+    word-wrap: break-word; /* voorkom overflow */
+}
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#searchIcon {
+    cursor: pointer;
+    display: inline-block;
+    transition: transform 0.4s ease;
+    font-size: 24px;
+}
+#searchInput:focus {
+    outline: none;
+    border-color: #5481B7;
+    box-shadow: 0 0 5px rgba(84,129,183,0.3);
+}
+
+#searchInput {
+    width: 0;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    opacity: 0;
+    transition: width 0.4s ease, opacity 0.4s ease, padding 0.4s ease;
+    font-size: 14px;
+}
+
+.search-container:hover #searchIcon {
+    transform: rotate(-360deg) translateX(-10px); /* icoon rolt naar links */
+}
+
+.search-container:hover #searchInput {
+    width: 200px;   /* gewenste breedte zoekbalk */
+    padding: 5px 15px;
+    opacity: 1;
+}
