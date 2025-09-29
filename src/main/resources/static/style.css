@@ -404,11 +404,11 @@ main {
 }
 
 .search-container:hover #searchIcon {
-    transform: rotate(-360deg) translateX(-10px); /* icoon rolt naar links */
+    transform: rotate(-360deg) translateX(-10px);
 }
 
 .search-container:hover #searchInput {
-    width: 200px;   /* gewenste breedte zoekbalk */
+    width: 200px;
     padding: 5px 15px;
     opacity: 1;
 }
