@@ -22,78 +22,118 @@
 </main>
 
 <!-- Workshop Popup -->
-<!-- Workshop Popup -->
 <div class="popup" id="workshopPopup">
-    <div class="popup-content">
+    <div class="popup-content workshop-form">
         <span class="close" id="closePopupBtn">&times;</span>
-        <h2>Nieuwe Workshop</h2>
 
-        <label for="workshopName">Naam</label>
-        <input type="text" id="workshopName" placeholder="Voer de workshop naam in">
-
-        <label for="workshopDesc">Beschrijving</label>
-        <textarea id="workshopDesc" placeholder="Voer een korte beschrijving in"></textarea>
-
-        <label for="workshopDuration">Duur</label>
-        <input type="time" id="workshopDuration" step="60" placeholder="Tussen de 1 en 2 uur">
-
-        <label for="workshopImage">Afbeelding</label>
-        <input type="file" id="workshopImage" accept="image/*">
-
-        <label for="workshopFiles">Download bestanden (optioneel)</label>
-        <input type="file" id="workshopFiles" multiple>
-        <div id="fileList"></div> <!-- aantal bestanden toegevoegd -->
-
-        <!-- Bestaande bestanden (alleen bij bewerken) -->
-        <div id="existingFileListContainer" style="display:none; margin-top:10px;">
-            <h4>Bestaande bestanden</h4>
-            <ul id="existingFileList"></ul>
+        <div class="popup-header">
+            <img src="image/logo.png" alt="WAIL Salutem Logo" class="popup-logo">
         </div>
 
-        <div class="popup-footer">
-            <button id="saveWorkshopBtn" class="btn-primary">Bevestigen</button>
-            <button id="closePopupBtnCancel" class="btn-secondary">Annuleren</button>
-        </div>
-    </div>
-</div>
+        <div class="popup-body">
+            <!-- Left side -->
+            <div class="popup-left">
+                <div class="media-upload">
+                    <p>Afbeelding / Video slideshow</p>
+                    <input type="file" id="workshopMedia" accept="image/*,video/*" multiple>
+                    <div id="mediaSlideshow" class="slideshow">
+                        <button id="prevMedia" class="slide-btn">&#10094;</button>
+                        <div id="mediaContainer"></div>
+                        <button id="nextMedia" class="slide-btn">&#10095;</button>
+                    </div>
+                </div>
 
+                <div class="download-section-upload">
+                    <p>Download bestanden</p>
+                    <input type="file" id="workshopFiles" multiple>
+                    <ul id="fileList"></ul>
+                </div>
+            </div>
 
-<!-- Workshop details popup -->
-<div id="workshopDetailsPopup" class="popup">
-    <div class="popup-content details">
-        <span id="closeDetailsPopupBtn" class="close">&times;</span>
+            <!-- Right side -->
+            <div class="popup-right">
+                <label for="workshopName">Naam</label>
+                <input type="text" id="workshopName" placeholder="Naam">
 
-        <div class="details-header">
-            <img id="detailImage" src="" alt="Workshop afbeelding">
-            <div class="details-info">
-                <h3 id="detailName"></h3>
-                <div id="detailDesc" class="detail-desc"></div>
-                <div class="detail-duration">
-                    <span id="detailDuration"></span>
+                <label for="workshopDesc">Omschrijving</label>
+                <textarea id="workshopDesc" placeholder="Omschrijving"></textarea>
+
+                <label for="workshopDuration">Duur</label>
+                <input type="time" id="workshopDuration" step="60">
+
+                <label for="workshopLabelInput">Labels</label>
+                <div style="display:flex; gap:5px; align-items:center;">
+                    <input type="text" id="workshopLabelInput" placeholder="Label naam">
+                    <input type="color" id="workshopLabelColor" value="#5481B7">
+                    <button type="button" id="addLabelBtn">➕</button>
+                </div>
+
+                <div id="labelPreview" style="margin-top:10px; display:flex; flex-wrap:wrap; gap:5px;"></div>
+
+                <div class="popup-buttons">
+                    <button id="closePopupBtnCancel" class="btn-secondary">Annuleren</button>
+                    <button id="saveWorkshopBtn" class="btn-primary">Opslaan</button>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <div id="detailFiles" class="download-section" style="display:none;">
-            <p>Download bestanden:</p>
-            <ul id="detailFileList"></ul>
+<!-- Workshop details popup -->
+<div id="workshopDetailsPopup" class="popup">
+    <div class="popup-content workshop-form">
+        <span id="closeDetailsPopupBtn" class="close">&times;</span>
+
+        <div class="popup-header">
+            <img src="image/logo.png" alt="WAIL Salutem Logo" class="popup-logo">
         </div>
 
-        <div class="details-footer">
-            <button id="deleteWorkshopBtn">Verwijderen</button>
+        <div class="popup-body">
+            <div class="popup-left">
+                <div class="media-upload">
+                    <p>Afbeelding / Video slideshow</p>
+                    <div id="detailSlideshow" class="slideshow">
+                        <button id="prevDetailMedia" class="slide-btn">&#10094;</button>
+                        <div id="detailMediaContainer"></div>
+                        <button id="nextDetailMedia" class="slide-btn">&#10095;</button>
+                    </div>
+                </div>
+
+                <div class="download-section-upload" id="detailFilesContainer">
+                    <p>Download bestanden</p>
+                    <ul id="detailFileList"></ul>
+                </div>
+            </div>
+
+            <div class="popup-right">
+                <label for="detailName">Naam</label>
+                <input type="text" id="detailName" readonly>
+
+                <label for="detailDesc">Omschrijving</label>
+                <textarea id="detailDesc" readonly></textarea>
+
+                <label for="detailDuration">Duur</label>
+                <input type="time" id="detailDuration" readonly>
+
+                <label>Labels</label>
+                <div id="detailLabelPreview" style="display:flex; flex-wrap:wrap; gap:5px;"></div>
+
+
+                <div class="popup-buttons">
+                    <button id="updateWorkshopBtn" class="btn-primary">Opslaan</button>
+                    <button id="deleteWorkshopBtn" class="btn-secondary">Verwijderen</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Afbeelding overlay -->
-<div id="imageOverlay" class="overlay">
-    <span id="closeOverlay">&times;</span>
-    <img id="overlayImg" src="" alt="Vergrote afbeelding">
+<!-- Language Switcher -->
+<div class="language-switcher">
+    <img src="image/Flag_of_the_Netherlands.svg.webp" alt="Nederlands" class="flag" onclick="switchLanguage('nl')">
+    <img src="image/US-UK_flag.jpg" alt="English" class="flag" onclick="switchLanguage('en')">
 </div>
 
 <script src="script.js"></script>
 </body>
 </html>
-
-
-

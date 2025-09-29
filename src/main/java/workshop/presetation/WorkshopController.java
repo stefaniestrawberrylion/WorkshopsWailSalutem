@@ -35,9 +35,10 @@ public class WorkshopController {
             @RequestParam String description,
             @RequestParam double duration,
             @RequestParam MultipartFile image,
-            @RequestParam(required = false) MultipartFile[] files
+            @RequestParam(required = false) MultipartFile[] files,
+            @RequestParam(required = false) String labels
     ) throws IOException {
-        Workshop workshop = service.saveWorkshop(name, description, duration, image, files);
+        Workshop workshop = service.saveWorkshop(name, description, duration, image, files, labels);
         return toDTO(workshop);
     }
 

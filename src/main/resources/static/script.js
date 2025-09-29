@@ -1,404 +1,431 @@
-const addBtn = document.getElementById('addWorkshopBtn');
-const popup = document.getElementById('workshopPopup');
-const closeBtn = document.getElementById('closePopupBtn');
-const saveBtn = document.getElementById('saveWorkshopBtn');
-const grid = document.getElementById('workshopGrid');
+document.addEventListener('DOMContentLoaded', () => {
 
-const detailsPopup = document.getElementById('workshopDetailsPopup');
-const closeDetailsBtn = document.getElementById('closeDetailsPopupBtn');
-const deleteBtn = document.getElementById('deleteWorkshopBtn');
+    // ===================
+    // Elementen ophalen
+    // ===================
+    const addBtn = document.getElementById('addWorkshopBtn');
+    const popup = document.getElementById('workshopPopup');
+    const closeBtn = document.getElementById('closePopupBtn');
+    const saveBtn = document.getElementById('saveWorkshopBtn');
+    const grid = document.getElementById('workshopGrid');
 
-let currentWorkshopId = null;
-let selectedFiles = [];
+    const detailsPopup = document.getElementById('workshopDetailsPopup');
+    const closeDetailsBtn = document.getElementById('closeDetailsPopupBtn');
+    const closeDetailsBtnCancel = document.getElementById('closePopupBtnCancel');
+    const deleteBtn = document.getElementById('deleteWorkshopBtn');
 
-const workshopFilesInput = document.getElementById('workshopFiles');
-const fileList = document.getElementById('fileList');
-const overlay = document.getElementById('imageOverlay');
-const overlayImg = document.getElementById('overlayImg');
-const detailImage = document.getElementById('detailImage');
+    const workshopFilesInput = document.getElementById('workshopFiles');
+    const fileList = document.getElementById('fileList');
+    const workshopMediaInput = document.getElementById('workshopMedia');
 
-// ===================
-// Open/close popup
-// ===================
-addBtn.addEventListener('click', () => popup.style.display = 'flex');
-closeBtn.addEventListener('click', () => { popup.style.display = 'none'; clearPopup(); });
-document.getElementById('closePopupBtnCancel').addEventListener('click', () => { popup.style.display = 'none'; clearPopup(); });
-closeDetailsBtn.addEventListener('click', () => { detailsPopup.style.display = 'none'; clearDetailsPopup(); });
+    const addLabelBtn = document.getElementById('addLabelBtn');
+    const labelInput = document.getElementById('workshopLabelInput');
+    const labelColor = document.getElementById('workshopLabelColor');
+    const labelPreview = document.getElementById('labelPreview');
+    const detailLabelPreview = document.getElementById('detailLabelPreview');
 
-window.addEventListener('click', (e) => {
-    if (e.target === popup) { popup.style.display = 'none'; clearPopup(); }
-    if (e.target === detailsPopup) { detailsPopup.style.display = 'none'; clearDetailsPopup(); }
-});
+    const searchInput = document.getElementById('searchInput');
+    const prevBtn = document.getElementById('prevDetailMedia');
+    const nextBtn = document.getElementById('nextDetailMedia');
 
-// ===================
-// Nieuwe bestanden selecteren
-// ===================
-workshopFilesInput.addEventListener('change', (event) => {
-    const allowedFileTypes = [
-        'image/png', 'image/jpeg',
-        'application/pdf',
-        'application/msword',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'text/plain'
-    ];
+    // ===================
+    // State
+    // ===================
+    let currentWorkshopId = null;
+    let selectedFiles = [];
+    let labels = [];
 
-    const newFiles = Array.from(event.target.files);
+    // ===================
+    // Open/close popup
+    // ===================
+    if (addBtn) addBtn.addEventListener('click', () => popup.style.display = 'flex');
+    if (closeBtn) closeBtn.addEventListener('click', () => { popup.style.display = 'none'; clearPopup(); });
+    if (closeDetailsBtn) closeDetailsBtn.addEventListener('click', () => { detailsPopup.style.display = 'none'; clearDetailsPopup(); });
+    if (closeDetailsBtnCancel) closeDetailsBtnCancel.addEventListener('click', () => { popup.style.display = 'none'; clearPopup(); });
 
-    newFiles.forEach(file => {
-        if (!allowedFileTypes.includes(file.type)) {
-            alert(`Bestand ${file.name} is niet toegestaan.`);
-            return;
-        }
-        if (selectedFiles.length < 10 && !selectedFiles.some(f => f.name === file.name)) {
-            selectedFiles.push(file);
-        }
+    window.addEventListener('click', (e) => {
+        if (e.target === popup) { popup.style.display = 'none'; clearPopup(); }
+        if (e.target === detailsPopup) { detailsPopup.style.display = 'none'; clearDetailsPopup(); }
     });
 
-    updateFileListDisplay();
-    workshopFilesInput.value = '';
-});
+    // ===================
+    // Bestand selectie
+    // ===================
+    if (workshopFilesInput) {
+        workshopFilesInput.addEventListener('change', (event) => {
+            const allowedFileTypes = [
+                'image/png', 'image/jpeg', 'video/mp4',
+                'application/pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'text/plain'
+            ];
 
-function updateFileListDisplay() {
-    if (selectedFiles.length === 0) {
-        fileList.textContent = '';
-    } else {
-        fileList.textContent = `${selectedFiles.length} nieuw(e) bestand(en) toegevoegd`;
-    }
-}
+            const newFiles = Array.from(event.target.files);
 
-// ===================
-// Opslaan workshop
-// ===================
-saveBtn.addEventListener('click', async () => {
-    const nameInput = document.getElementById('workshopName');
-    const descInput = document.getElementById('workshopDesc');
-    const durationInput = document.getElementById('workshopDuration');
-    const workshopImageInput = document.getElementById('workshopImage');
-    const currentImagePreview = document.getElementById('currentImagePreview');
+            newFiles.forEach(file => {
+                if (!allowedFileTypes.includes(file.type)) {
+                    alert(`Bestand ${file.name} is niet toegestaan.`);
+                    return;
+                }
+                if (selectedFiles.length < 10 && !selectedFiles.some(f => f.name === file.name)) {
+                    selectedFiles.push(file);
+                }
+            });
 
-    const name = nameInput ? nameInput.value.trim() : '';
-    const desc = descInput ? descInput.value.trim() : '';
-    const newImage = workshopImageInput ? workshopImageInput.files[0] : null;
-
-    // Haal tijd op als "HH:MM" en zet om naar decimale uren
-    let duration = 0;
-    if (durationInput && durationInput.value) {
-        const [hours, minutes] = durationInput.value.split(':').map(Number);
-        duration = hours + minutes / 60; // 1:30 -> 1.5
+            updateFileListDisplay();
+            workshopFilesInput.value = '';
+        });
     }
 
-    // Controleer verplichte velden
-    if (!name || !desc || !duration) {
-        alert('Vul alle verplichte velden in.');
-        return;
+    function updateFileListDisplay() {
+        if (!fileList) return;
+        fileList.textContent = selectedFiles.length ? `${selectedFiles.length} nieuw(e) bestand(en) toegevoegd` : '';
     }
 
-    // Controleer of duur tussen 1 en 2 uur ligt
-    if (duration < 1 || duration > 2) {
-        alert('De duur moet tussen 1 en 2 uur liggen.');
-        return;
+    // ===================
+    // Labels toevoegen
+    // ===================
+    if (addLabelBtn) {
+        addLabelBtn.addEventListener('click', () => {
+            const name = labelInput.value.trim();
+            const color = labelColor.value;
+            if (!name) return;
+
+            // Label opslaan
+            labels.push({ name, color });
+
+            // Label tonen
+            const span = document.createElement('span');
+            span.textContent = name;
+            span.style.backgroundColor = color;
+            span.style.border = '1px solid ' + color;
+
+            // Label verwijderen bij click
+            span.addEventListener('click', () => {
+                labelPreview.removeChild(span);
+                labels = labels.filter(l => l.name !== name || l.color !== color);
+            });
+
+            labelPreview.appendChild(span);
+            labelInput.value = '';
+        });
     }
 
-    // Controleer afbeeldingstype
-    if (newImage && !['image/png','image/jpeg'].includes(newImage.type)) {
-        alert('Alleen PNG of JPEG afbeeldingen zijn toegestaan.');
-        return;
-    }
+    // ===================
+    // Opslaan workshop inclusief labels & bestanden
+    // ===================
+    if (saveBtn) {
+        saveBtn.addEventListener('click', async () => {
+            const name = document.getElementById('workshopName').value.trim();
+            const desc = document.getElementById('workshopDesc').value.trim();
+            const durationInput = document.getElementById('workshopDuration');
 
-    if (selectedFiles.length > 10) {
-        alert('Max 10 bestanden toegestaan.');
-        return;
-    }
+            let duration = 0;
+            if (durationInput && durationInput.value) {
+                const [hours, minutes] = durationInput.value.split(':').map(Number);
+                duration = hours + minutes / 60;
+            }
 
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('description', desc);
-    formData.append('duration', duration);
+            if (!name || !desc || !duration) {
+                alert('Vul alle verplichte velden in.');
+                return;
+            }
 
-    // Voeg nieuwe afbeelding toe
-    if (newImage) {
-        formData.append('image', newImage);
-    } else if (currentImagePreview && currentImagePreview.src) {
-        formData.append('existingImageUrl', currentImagePreview.src);
-    }
+            if (duration < 1 || duration > 2) {
+                alert('De duur moet tussen 1 en 2 uur liggen.');
+                return;
+            }
 
-    // Voeg nieuwe bestanden toe
-    selectedFiles.forEach(file => formData.append('files', file));
+            if (workshopMediaInput && workshopMediaInput.files.length > 0) {
+                const mediaFile = workshopMediaInput.files[0];
+                if (!['image/png','image/jpeg','video/mp4'].includes(mediaFile.type)) {
+                    alert('Alleen PNG, JPEG afbeeldingen en MP4 video’s zijn toegestaan.');
+                    return;
+                }
+            }
 
-    // Bestaande bestanden die verwijderd moeten worden
-    const existingList = document.getElementById('existingFileList');
-    const filesToRemove = [];
-    if (existingList) {
-        existingList.querySelectorAll('li').forEach(li => {
-            if (li.toDelete && li.file) {
-                filesToRemove.push(li.file.url);
+            if (selectedFiles.length > 10) {
+                alert('Max 10 bestanden toegestaan.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('description', desc);
+            formData.append('duration', duration);
+            formData.append('labels', JSON.stringify(labels));
+
+            if (workshopMediaInput && workshopMediaInput.files.length > 0) {
+                formData.append('image', workshopMediaInput.files[0]);
+            }
+            selectedFiles.forEach(file => formData.append('files', file));
+
+            try {
+                let response;
+                if (currentWorkshopId) response = await fetch(`/api/workshops/${currentWorkshopId}`, { method: 'PUT', body: formData });
+                else response = await fetch('/api/workshops', { method: 'POST', body: formData });
+
+                if (!response.ok) throw new Error('Fout bij opslaan workshop');
+
+                // Labels tonen in detail popup
+                detailLabelPreview.innerHTML = '';
+                labels.forEach(label => {
+                    const span = document.createElement('span');
+                    span.textContent = label.name;
+                    span.style.backgroundColor = label.color;
+                    span.style.border = '1px solid ' + label.color;
+                    detailLabelPreview.appendChild(span);
+                });
+
+                // Reset input
+                labels = [];
+                labelPreview.innerHTML = '';
+                selectedFiles = [];
+                popup.style.display = 'none';
+                clearPopup();
+                loadWorkshops();
+            } catch (e) {
+                alert(e.message);
             }
         });
     }
-    formData.append('filesToRemove', JSON.stringify(filesToRemove));
 
-    try {
-        let response;
-        if (currentWorkshopId) {
-            response = await fetch(`/api/workshops/${currentWorkshopId}`, { method: 'PUT', body: formData });
-        } else {
-            response = await fetch('/api/workshops', { method: 'POST', body: formData });
+    // ===================
+    // Workshops ophalen & renderen
+    // ===================
+    async function loadWorkshops() {
+        try {
+            const res = await fetch('/api/workshops');
+            if (!res.ok) throw new Error('Fout bij ophalen workshops');
+            const workshops = await res.json();
+            renderWorkshops(workshops);
+        } catch (e) {
+            alert(e.message);
         }
-
-        if (!response.ok) throw new Error('Fout bij opslaan workshop');
-        popup.style.display = 'none';
-        clearPopup();
-        loadWorkshops();
-    } catch (e) {
-        alert(e.message);
     }
-});
 
-// ===================
-// Workshops ophalen & renderen
-// ===================
-async function loadWorkshops() {
-    try {
-        const res = await fetch('/api/workshops');
-        if (!res.ok) throw new Error('Fout bij ophalen workshops');
-        const workshops = await res.json();
-        renderWorkshops(workshops);
-    } catch (e) {
-        alert(e.message);
+    function renderWorkshops(workshops) {
+        if (!grid) return;
+        grid.innerHTML = '';
+        workshops.forEach(w => {
+            const card = document.createElement('div');
+            card.classList.add('workshop-card');
+
+            let hours = Math.floor(w.duration);
+            let minutes = Math.round((w.duration - hours) * 60);
+            let durationStr = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}`;
+
+            card.innerHTML = `
+                <div class="workshop-top">
+                    <div class="workshop-badge time">${durationStr}</div>
+                    <div class="workshop-badge like" style="cursor:pointer;">♡</div>
+                </div>
+                <div class="workshop-image">
+                    <img src="${w.imageUrl}" alt="${w.name}">
+                </div>
+                <div class="workshop-info">
+                    <h3>${w.name}</h3>
+                    <p>${w.review || 'Nog geen review'}</p>
+                </div>
+            `;
+
+            // Like knop
+            const likeBadge = card.querySelector('.like');
+            likeBadge.addEventListener('click', () => {
+                likeBadge.textContent = likeBadge.textContent === '♡' ? '❤️' : '♡';
+            });
+
+            // View workshop knop
+            const viewBtn = document.createElement('button');
+            viewBtn.classList.add('workshop-btn');
+            viewBtn.textContent = 'View workshop';
+            viewBtn.addEventListener('click', () => viewWorkshopDetails(w.id));
+            card.appendChild(viewBtn);
+
+            grid.appendChild(card);
+        });
     }
-}
 
-function renderWorkshops(workshops) {
-    grid.innerHTML = '';
-    workshops.forEach(w => {
-        const hours = Math.floor(w.duration);
-        const minutes = Math.round((w.duration - hours) * 60);
-        const hh = hours.toString().padStart(2, '0');
-        const mm = minutes.toString().padStart(2, '0');
+    // ===================
+    // Workshop details + slideshow
+    // ===================
+    async function viewWorkshopDetails(id) {
+        try {
+            currentWorkshopId = id;
+            const res = await fetch(`/api/workshops/${id}`);
+            if (!res.ok) throw new Error('Workshop niet gevonden');
+            const w = await res.json();
 
-        const card = document.createElement('div');
-        card.classList.add('workshop-card');
-        card.innerHTML = `
-            <img src="${w.imageUrl}" alt="${w.name}" style="max-width:100%; height:auto; margin-bottom:5px;">
-            <div class="info">
-                <h3>${w.name}</h3>
-                <p>${w.description.length > 50 ? w.description.substring(0,50)+'...' : w.description}</p>
-                <small>Duur: ${hh}:${mm} uur</small>
-            </div>
-            <button onclick="viewWorkshopDetails(${w.id})">Zie workshop</button>
-            <button onclick="editWorkshop(${w.id})" style="margin-top:5px; background-color:#FFA500;">Bewerk</button>
-        `;
-        grid.appendChild(card);
-    });
-}
+            // Vul de basisvelden
+            document.getElementById('detailName').value = w.name;
+            document.getElementById('detailDesc').value = w.description;
 
+            const detailDuration = document.getElementById('detailDuration');
+            if (w.duration != null) {
+                const hours = Math.floor(w.duration);
+                const minutes = Math.round((w.duration - hours) * 60);
+                detailDuration.value = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}`;
+            }
 
-// ===================
-// Workshop details
-// ===================
-async function viewWorkshopDetails(id) {
-    try {
-        currentWorkshopId = id;
-        const res = await fetch(`/api/workshops/${id}`);
-        if (!res.ok) throw new Error('Workshop niet gevonden');
-        const w = await res.json();
+            // ===================
+            // Labels tonen
+            // ===================
+            detailLabelPreview.innerHTML = '';
 
-        const detailName = document.getElementById('detailName');
-        const detailDesc = document.getElementById('detailDesc');
-        const detailDuration = document.getElementById('detailDuration');
-        if (detailName) detailName.textContent = w.name;
-        if (detailDesc) detailDesc.textContent = w.description;
+            // Labels ophalen, parseren indien nodig
+            let labelsArray = [];
+            if (w.labels) {
+                if (typeof w.labels === 'string') {
+                    try {
+                        labelsArray = JSON.parse(w.labels);
+                    } catch (err) {
+                        console.error('Fout bij parsen labels:', err);
+                    }
+                } else if (Array.isArray(w.labels)) {
+                    labelsArray = w.labels;
+                }
+            }
 
-        // Decimaal naar HH:MM voor weergave
-        if (detailDuration && w.duration != null) {
-            const hours = Math.floor(w.duration);
-            const minutes = Math.round((w.duration - hours) * 60);
-            const hh = hours.toString().padStart(2, '0');
-            const mm = minutes.toString().padStart(2, '0');
-            detailDuration.textContent = `Duur: ${hh}:${mm} uur`;
-        }
+            // Labels in de DOM zetten
+            labelsArray.forEach(label => {
+                const span = document.createElement('span');
+                span.textContent = label.name;
+                span.style.backgroundColor = label.color;
+                span.style.border = '1px solid ' + label.color;
+                span.style.padding = '2px 6px';
+                span.style.borderRadius = '4px';
+                detailLabelPreview.appendChild(span);
+            });
 
-        if (detailImage) detailImage.src = w.imageUrl;
-
-        const detailFileList = document.getElementById('detailFileList');
-        if (detailFileList) {
+            // ===================
+            // Bestanden tonen
+            // ===================
+            const detailFileList = document.getElementById('detailFileList');
             detailFileList.innerHTML = '';
-            if (w.files && w.files.length > 0) {
+            if (w.files) {
                 w.files.forEach(file => {
                     const li = document.createElement('li');
                     const a = document.createElement('a');
                     a.href = file.url;
-                    a.textContent = file.name;
                     a.download = file.name;
+                    a.textContent = file.name;
                     li.appendChild(a);
                     detailFileList.appendChild(li);
                 });
-                const detailFilesDiv = document.getElementById('detailFiles');
-                if (detailFilesDiv) detailFilesDiv.style.display = 'block';
-            } else {
-                const detailFilesDiv = document.getElementById('detailFiles');
-                if (detailFilesDiv) detailFilesDiv.style.display = 'none';
             }
-        }
 
-        detailsPopup.style.display = 'flex';
-    } catch (e) {
-        alert(e.message);
-    }
-}
+            // ===================
+            // Slideshow
+            // ===================
+            const detailMediaContainer = document.getElementById('detailMediaContainer');
+            detailMediaContainer.innerHTML = '';
+            const mediaFiles = (w.media && w.media.length > 0) ? w.media : (w.imageUrl ? [{ url: w.imageUrl, type: 'image/jpeg' }] : []);
 
-// ===================
-// Workshop bewerken
-// ===================
-async function editWorkshop(id) {
-    try {
-        const res = await fetch(`/api/workshops/${id}`);
-        if (!res.ok) throw new Error('Workshop niet gevonden');
-        const w = await res.json();
-
-        popup.style.display = 'flex';
-        document.getElementById('existingFileListContainer').style.display = 'block';
-
-        // Vul de velden
-        const nameInput = document.getElementById('workshopName');
-        const descInput = document.getElementById('workshopDesc');
-        const durationInput = document.getElementById('workshopDuration');
-
-        if (nameInput) nameInput.value = w.name;
-        if (descInput) descInput.value = w.description;
-
-        // Decimaal naar HH:MM voor input[type="time"]
-        if (durationInput && w.duration != null) {
-            const hours = Math.floor(w.duration);
-            const minutes = Math.round((w.duration - hours) * 60);
-            const hh = hours.toString().padStart(2, '0');
-            const mm = minutes.toString().padStart(2, '0');
-            durationInput.value = `${hh}:${mm}`;
-        }
-
-        selectedFiles = [];
-        updateFileListDisplay();
-        currentWorkshopId = id;
-
-        // Bestaande bestanden tonen
-        const existingList = document.getElementById('existingFileList');
-        existingList.innerHTML = '';
-        if (w.files && w.files.length > 0) {
-            w.files.forEach(file => {
-                const li = document.createElement('li');
-                li.textContent = file.name + ' ';
-                li.file = file;
-                li.toDelete = false;
-
-                const removeBtn = document.createElement('button');
-                removeBtn.textContent = 'Verwijderen';
-                removeBtn.style.marginLeft = '10px';
-                removeBtn.addEventListener('click', () => {
-                    li.toDelete = !li.toDelete;
-                    li.style.textDecoration = li.toDelete ? 'line-through' : 'none';
-                    li.style.color = li.toDelete ? 'red' : 'black';
-                });
-
-                li.appendChild(removeBtn);
-                existingList.appendChild(li);
+            mediaFiles.forEach((file, i) => {
+                let el;
+                if (file.type.startsWith('image/')) {
+                    el = document.createElement('img');
+                    el.src = file.url;
+                } else if (file.type.startsWith('video/')) {
+                    el = document.createElement('video');
+                    el.src = file.url;
+                    el.controls = true;
+                }
+                el.style.display = i === 0 ? 'block' : 'none';
+                el.style.maxWidth = '100%';
+                el.style.maxHeight = '300px';
+                detailMediaContainer.appendChild(el);
             });
+
+            // Slideshow navigatie
+            if (mediaFiles.length > 0 && prevBtn && nextBtn) {
+                let currentIndex = 0;
+                prevBtn.onclick = () => {
+                    const media = detailMediaContainer.children;
+                    media[currentIndex].style.display = 'none';
+                    currentIndex = (currentIndex - 1 + media.length) % media.length;
+                    media[currentIndex].style.display = 'block';
+                };
+                nextBtn.onclick = () => {
+                    const media = detailMediaContainer.children;
+                    media[currentIndex].style.display = 'none';
+                    currentIndex = (currentIndex + 1) % media.length;
+                    media[currentIndex].style.display = 'block';
+                };
+            }
+
+            detailsPopup.style.display = 'flex';
+        } catch (e) {
+            alert(e.message);
         }
-    } catch (e) {
-        alert(e.message);
     }
-}
 
-// ===================
-// Verwijderen workshop
-// ===================
-deleteBtn.addEventListener('click', async () => {
-    if (!currentWorkshopId) return;
-    if (!confirm('Weet je zeker dat je deze workshop wilt verwijderen?')) return;
-    try {
-        const res = await fetch(`/api/workshops/${currentWorkshopId}`, { method: 'DELETE' });
-        if (!res.ok) throw new Error('Fout bij verwijderen workshop');
-        detailsPopup.style.display = 'none';
-        clearDetailsPopup();
-        loadWorkshops();
-    } catch (e) {
-        alert(e.message);
+
+    // ===================
+    // Workshop verwijderen
+    // ===================
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', async () => {
+            if (!currentWorkshopId) return;
+            if (!confirm('Weet je zeker dat je deze workshop wilt verwijderen?')) return;
+
+            try {
+                const res = await fetch(`/api/workshops/${currentWorkshopId}`, { method: 'DELETE' });
+                if (!res.ok) throw new Error('Fout bij verwijderen workshop');
+                detailsPopup.style.display = 'none';
+                clearDetailsPopup();
+                loadWorkshops();
+            } catch (e) {
+                alert(e.message);
+            }
+        });
     }
+
+    // ===================
+    // Clear functies
+    // ===================
+    function clearPopup() {
+        currentWorkshopId = null;
+        selectedFiles = [];
+        labels = [];
+        document.getElementById('workshopName').value = '';
+        document.getElementById('workshopDesc').value = '';
+        document.getElementById('workshopDuration').value = '';
+        labelPreview.innerHTML = '';
+        if (workshopMediaInput) workshopMediaInput.value = '';
+        if (fileList) fileList.textContent = '';
+    }
+
+    function clearDetailsPopup() {
+        currentWorkshopId = null;
+        document.getElementById('detailName').value = '';
+        document.getElementById('detailDesc').value = '';
+        document.getElementById('detailDuration').value = '';
+        detailLabelPreview.innerHTML = '';
+        document.getElementById('detailFileList').innerHTML = '';
+        const detailMediaContainer = document.getElementById('detailMediaContainer');
+        if (detailMediaContainer) detailMediaContainer.innerHTML = '';
+    }
+
+    // ===================
+    // Zoekfunctie
+    // ===================
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase();
+            const workshopCards = document.querySelectorAll('.workshop-card');
+            workshopCards.forEach(card => {
+                const name = card.querySelector('.workshop-info h3').textContent.toLowerCase();
+                const desc = card.querySelector('.workshop-info p').textContent.toLowerCase();
+                card.style.display = (name.includes(query) || desc.includes(query)) ? 'flex' : 'none';
+            });
+        });
+    }
+
+    // ===================
+    // Initial load
+    // ===================
+    loadWorkshops();
+
 });
-
-// ===================
-// Overlay afbeelding
-// ===================
-if (detailImage) {
-    detailImage.addEventListener('click', () => {
-        overlay.style.display = 'flex';
-        overlayImg.src = detailImage.src;
-    });
-}
-const closeOverlayBtn = document.getElementById('closeOverlay');
-if (closeOverlayBtn) closeOverlayBtn.addEventListener('click', () => overlay.style.display = 'none');
-
-// ===================
-// Clear popups
-// ===================
-function clearPopup() {
-    const nameInput = document.getElementById('workshopName');
-    const descInput = document.getElementById('workshopDesc');
-    const durationInput = document.getElementById('workshopDuration');
-    const workshopImageInput = document.getElementById('workshopImage');
-
-    if (nameInput) nameInput.value = '';
-    if (descInput) descInput.value = '';
-    if (durationInput) durationInput.value = '';
-    if (workshopImageInput) workshopImageInput.value = '';
-
-    workshopFilesInput.value = '';
-    selectedFiles = [];
-    updateFileListDisplay();
-
-    // Verberg en leeg bestaande bestandenlijst
-    const existingList = document.getElementById('existingFileList');
-    if (existingList) existingList.innerHTML = '';
-    document.getElementById('existingFileListContainer').style.display = 'none';
-
-    currentWorkshopId = null;
-}
-
-function clearDetailsPopup() {
-    const detailName = document.getElementById('detailName');
-    const detailDesc = document.getElementById('detailDesc');
-    const detailDuration = document.getElementById('detailDuration');
-    const detailImageEl = document.getElementById('detailImage');
-    const detailFileList = document.getElementById('detailFileList');
-    const detailFilesDiv = document.getElementById('detailFiles');
-
-    if (detailName) detailName.textContent = '';
-    if (detailDesc) detailDesc.textContent = '';
-    if (detailDuration) detailDuration.textContent = '';
-    if (detailImageEl) detailImageEl.src = '';
-    if (detailFileList) detailFileList.innerHTML = '';
-    if (detailFilesDiv) detailFilesDiv.style.display = 'none';
-
-    currentWorkshopId = null;
-}
-
-//zoekbalk
-const searchInput = document.getElementById('searchInput');
-
-searchInput.addEventListener('input', () => {
-    const filter = searchInput.value.toLowerCase();
-    const cards = document.querySelectorAll('.workshop-card');
-
-    cards.forEach(card => {
-        const name = card.querySelector('h3').textContent.toLowerCase();
-        if (name.includes(filter)) {
-            card.style.display = 'flex';
-        } else {
-            card.style.display = 'none';
-        }
-    });
-});
-
-// ===================
-// Start laden workshops
-// ===================
-loadWorkshops();

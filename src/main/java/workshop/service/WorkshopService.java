@@ -12,6 +12,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 
 @Service
 public class WorkshopService {
@@ -39,18 +42,19 @@ public class WorkshopService {
     }
 
     public Workshop saveWorkshop(String name, String description, double duration,
-                                 MultipartFile image, MultipartFile[] files) throws IOException {
+                                 MultipartFile image, MultipartFile[] files,
+                                 String labelsInput) throws IOException {
 
         if (!Files.exists(uploadDir)) {
             Files.createDirectories(uploadDir);
         }
 
-        // Hoofdafbeelding opslaan
+        // Afbeelding opslaan
         String imageFileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
         Path imagePath = uploadDir.resolve(imageFileName);
         image.transferTo(imagePath.toFile());
 
-        // Extra bestanden opslaan
+        // Bestanden opslaan
         List<String> filePaths = new ArrayList<>();
         if (files != null) {
             for (MultipartFile file : files) {
@@ -63,16 +67,27 @@ public class WorkshopService {
             }
         }
 
+        // Labels verwerken
+        List<String> labels = new ArrayList<>();
+        if (labelsInput != null && !labelsInput.trim().isEmpty()) {
+            labels = Arrays.stream(labelsInput.split(","))
+                    .map(String::trim)
+                    .collect(Collectors.toList());
+        }
+
         // Workshop object vullen
         Workshop workshop = new Workshop();
         workshop.setName(name);
         workshop.setDescription(description);
         workshop.setDuration(duration);
         workshop.setImagePath("/uploads/" + imageFileName);
-        workshop.setFiles(filePaths); // correct
+        workshop.setFiles(filePaths);
+        workshop.setLabels(labels);
+        workshop.setReviews(new ArrayList<>()); // lege lijst initieel
 
         return workshopRepository.save(workshop);
     }
+
     private String saveImage(MultipartFile image) throws IOException {
         if (image == null || image.isEmpty()) return null;
         String imageFileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();

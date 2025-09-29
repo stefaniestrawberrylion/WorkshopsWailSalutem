@@ -7,54 +7,33 @@ public class WorkshopDTO {
     private String name;
     private String description;
     private double duration;
-    private String imageUrl; // frontend kan hier direct <img src="..."> van maken
+    private String imageUrl;
     private List<FileDTO> files;
+    private List<String> labels;
+    private List<String> reviews;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // Getters & setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public void setDuration(double duration) {
-        this.duration = duration;
-    }
+    public double getDuration() { return duration; }
+    public void setDuration(double duration) { this.duration = duration; }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
-    public void setFiles(List<FileDTO> files) {
-        this.files = files;
-    }
+    public List<FileDTO> getFiles() { return files; }
+    public void setFiles(List<FileDTO> files) { this.files = files; }
 
-    public Long getId() {
-        return id;
-    }
+    public List<String> getLabels() { return labels; }
+    public void setLabels(List<String> labels) { this.labels = labels; }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public double getDuration() {
-        return duration;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public List<FileDTO> getFiles() {
-        return files;
-    }
+    public List<String> getReviews() { return reviews; }
+    public void setReviews(List<String> reviews) { this.reviews = reviews; }
 }

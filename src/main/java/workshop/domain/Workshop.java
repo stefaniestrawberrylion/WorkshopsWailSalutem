@@ -1,46 +1,61 @@
-package workshop.domain;
+    package workshop.domain;
 
-import jakarta.persistence.*;
-import java.util.List;
+    import jakarta.persistence.*;
+    import java.util.List;
 
-@Entity
-public class Workshop {
+    @Entity
+    public class Workshop {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-    private String name;
+        private String name;
 
-    @Lob
-    @Column(columnDefinition = "TEXT")
-    private String description;
+        @Lob
+        @Column(columnDefinition = "TEXT")
+        private String description;
 
-    private double duration;
+        private double duration;
 
-    private String imagePath;
+        private String imagePath;
 
-    @ElementCollection
-    @CollectionTable(name = "workshop_file_paths", joinColumns = @JoinColumn(name = "workshop_id"))
-    @Column(name = "file_paths")
-    private List<String> files;
+        @ElementCollection
+        @CollectionTable(name = "workshop_file_paths", joinColumns = @JoinColumn(name = "workshop_id"))
+        @Column(name = "file_paths")
+        private List<String> files;
 
-    // ======= getters & setters =======
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+        @ElementCollection
+        @CollectionTable(name = "workshop_labels", joinColumns = @JoinColumn(name = "workshop_id"))
+        @Column(name = "label")
+        private List<String> labels;
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+        @ElementCollection
+        @CollectionTable(name = "workshop_reviews", joinColumns = @JoinColumn(name = "workshop_id"))
+        @Column(name = "review")
+        private List<String> reviews;
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+        // ======= getters & setters =======
+        public Long getId() { return id; }
+        public void setId(Long id) { this.id = id; }
 
-    public double getDuration() { return duration; }
-    public void setDuration(double duration) { this.duration = duration; }
+        public String getName() { return name; }
+        public void setName(String name) { this.name = name; }
 
-    public String getImagePath() { return imagePath; }
-    public void setImagePath(String imagePath) { this.imagePath = imagePath; }
+        public String getDescription() { return description; }
+        public void setDescription(String description) { this.description = description; }
 
-    public List<String> getFiles() { return files; }
-    public void setFiles(List<String> files) { this.files = files; }
-}
+        public double getDuration() { return duration; }
+        public void setDuration(double duration) { this.duration = duration; }
+
+        public String getImagePath() { return imagePath; }
+        public void setImagePath(String imagePath) { this.imagePath = imagePath; }
+
+        public List<String> getFiles() { return files; }
+        public void setFiles(List<String> files) { this.files = files; }
+        public List<String> getLabels() { return labels; }
+        public void setLabels(List<String> labels) { this.labels = labels; }
+
+        public List<String> getReviews() { return reviews; }
+        public void setReviews(List<String> reviews) { this.reviews = reviews; }
+    }
