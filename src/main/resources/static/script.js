@@ -368,6 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 detailLabelPreview.appendChild(span);
             });
 
+            // Files in details popup (met icon, nette kaartstijl)
             const detailFileList = document.getElementById('workshopFilePreview');
             if(detailFileList) {
                 detailFileList.innerHTML = '';
@@ -385,8 +386,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const li = document.createElement('li');
                     li.classList.add('file-card');
 
-                    // Breedte voor 2 kaarten per rij
-                    li.style.width = 'calc(40% - 5px)'; // kleiner dan 50%, zodat 2 passen
+                    // Breedte voor 2 kaarten per rij, iets kleiner zodat ze passen
+                    li.style.width = 'calc(40% - 5px)';
                     li.style.margin = '0'; // geen extra margin
                     li.style.padding = '10px';
                     li.style.border = '1px solid #ddd';
@@ -428,7 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Download knop
                     const actionBtn = document.createElement('button');
                     actionBtn.textContent = 'Download';
-                    actionBtn.style.background = '#5481B7';
+                    actionBtn.style.background = '#007bff';
                     actionBtn.style.color = 'white';
                     actionBtn.style.border = 'none';
                     actionBtn.style.padding = '4px 10px';
@@ -447,6 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     detailFileList.appendChild(li);
                 });
             }
+
 
             // Slideshow
             const container = document.getElementById('detailMediaContainer');
@@ -558,57 +560,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const desc = c.querySelector('.workshop-info p').textContent.toLowerCase();
                 c.style.display = (name.includes(query)||desc.includes(query))?'flex':'none';
             });
-        });
-    }
-    const editBtn = document.getElementById('editWorkshopBtn');
-
-    if(editBtn){
-        editBtn.addEventListener('click', async () => {
-            if(!currentWorkshopId){
-                alert('Selecteer eerst een workshop om aan te passen!');
-                return;
-            }
-
-            // Open de popup
-            popup.style.display = 'flex';
-
-            try{
-                // Workshop ophalen
-                const res = await fetch(`/api/workshops/${currentWorkshopId}`);
-                if(!res.ok) throw new Error('Workshop niet gevonden');
-                const w = await res.json();
-
-                // Vul popup velden
-                document.getElementById('workshopName').value = w.name;
-                document.getElementById('workshopDesc').value = w.description;
-
-                const durationInput = document.getElementById('workshopDuration');
-                const hours = Math.floor(w.duration);
-                const minutes = Math.round((w.duration - hours)*60);
-                durationInput.value = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}`;
-
-                // Labels
-                labels = w.labels ? (typeof w.labels === 'string' ? JSON.parse(w.labels) : w.labels) : [];
-                labelPreview.innerHTML = '';
-                labels.forEach(label=>{
-                    const span = document.createElement('span');
-                    span.textContent = label.name;
-                    span.style.backgroundColor = label.color;
-                    span.style.border = '1px solid ' + label.color;
-                    span.addEventListener('click', ()=>{
-                        labelPreview.removeChild(span);
-                        labels = labels.filter(l=>l.name!==label.name || l.color!==label.color);
-                    });
-                    labelPreview.appendChild(span);
-                });
-
-                // Media & Files
-                selectedMedia = w.files || [];
-                selectedFiles = w.documents || [];
-                updateMediaPreview();
-                updateFilesPreview();
-
-            }catch(e){ alert(e.message); }
         });
     }
 
