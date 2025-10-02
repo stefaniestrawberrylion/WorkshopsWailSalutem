@@ -9,8 +9,9 @@ public class WorkshopDTO {
     private double duration;
     private String imageUrl;
     private List<FileDTO> files;
-    private List<String> labels;
+    private List<LabelDTO> labels; // ✅ LabelDTO ipv String
     private List<String> reviews;
+    private List<FileDTO> documents;
 
     // Getters & setters
     public Long getId() { return id; }
@@ -31,9 +32,12 @@ public class WorkshopDTO {
     public List<FileDTO> getFiles() { return files; }
     public void setFiles(List<FileDTO> files) { this.files = files; }
 
-    public List<String> getLabels() { return labels; }
-    public void setLabels(List<String> labels) { this.labels = labels; }
+    public List<LabelDTO> getLabels() { return labels; }
+    public void setLabels(List<LabelDTO> labels) { this.labels = labels; }
 
     public List<String> getReviews() { return reviews; }
     public void setReviews(List<String> reviews) { this.reviews = reviews; }
+
+    public List<FileDTO> getDocuments() { return documents; }
+    public void setDocuments(List<FileDTO> documents) { this.documents = documents; }
 }

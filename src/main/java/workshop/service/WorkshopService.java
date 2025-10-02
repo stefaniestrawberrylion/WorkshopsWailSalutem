@@ -15,12 +15,10 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-
 @Service
 public class WorkshopService {
 
     private final WorkshopRepository workshopRepository;
-
     private final Path uploadDir = Paths.get(System.getProperty("user.home"), "workshop-uploads");
 
     public WorkshopService(WorkshopRepository workshopRepository) {
@@ -35,6 +33,7 @@ public class WorkshopService {
         return workshopRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Workshop not found with id: " + id));
     }
+
     public void deleteWorkshop(Long id) {
         Workshop w = workshopRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Workshop niet gevonden"));
@@ -42,58 +41,82 @@ public class WorkshopService {
     }
 
     public Workshop saveWorkshop(String name, String description, double duration,
-                                 MultipartFile image, MultipartFile[] files,
+                                 MultipartFile image, MultipartFile[] media, MultipartFile[] files,
                                  String labelsInput) throws IOException {
 
-        if (!Files.exists(uploadDir)) {
-            Files.createDirectories(uploadDir);
+        if (!Files.exists(uploadDir)) Files.createDirectories(uploadDir);
+
+        List<String> mediaPaths = new ArrayList<>();
+        List<String> filePaths = new ArrayList<>();
+
+        // Hoofdafbeelding
+        String imagePath = null;
+        if (image != null && !image.isEmpty()) {
+            imagePath = saveFile(image);
         }
 
-        // Afbeelding opslaan
-        String imageFileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-        Path imagePath = uploadDir.resolve(imageFileName);
-        image.transferTo(imagePath.toFile());
-
-        // Bestanden opslaan
-        List<String> filePaths = new ArrayList<>();
-        if (files != null) {
-            for (MultipartFile file : files) {
-                if (!file.isEmpty()) {
-                    String extraFileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-                    Path extraPath = uploadDir.resolve(extraFileName);
-                    file.transferTo(extraPath.toFile());
-                    filePaths.add("/uploads/" + extraFileName);
-                }
+        // Media (afbeeldingen + video)
+        if (media != null) {
+            for (MultipartFile m : media) {
+                mediaPaths.add(saveFile(m));
             }
         }
 
-        // Labels verwerken
-        List<String> labels = new ArrayList<>();
-        if (labelsInput != null && !labelsInput.trim().isEmpty()) {
-            labels = Arrays.stream(labelsInput.split(","))
-                    .map(String::trim)
-                    .collect(Collectors.toList());
+        // Documenten
+        if (files != null) {
+            for (MultipartFile f : files) {
+                String original = f.getOriginalFilename().toLowerCase();
+                if (original.endsWith(".jpg") || original.endsWith(".png") || original.endsWith(".mp4") || original.endsWith(".webm")) {
+                    continue; // skip media bestanden in document sectie
+                }
+                filePaths.add(saveFile(f));
+            }
         }
 
-        // Workshop object vullen
-        Workshop workshop = new Workshop();
-        workshop.setName(name);
-        workshop.setDescription(description);
-        workshop.setDuration(duration);
-        workshop.setImagePath("/uploads/" + imageFileName);
-        workshop.setFiles(filePaths);
-        workshop.setLabels(labels);
-        workshop.setReviews(new ArrayList<>()); // lege lijst initieel
+        Workshop w = new Workshop();
+        w.setName(name);
+        w.setDescription(description);
+        w.setDuration(duration);
+        w.setImagePath(imagePath);
+        w.setFiles(mediaPaths);
+        w.setDocuments(filePaths);
+        w.setReviews(new ArrayList<>());
 
-        return workshopRepository.save(workshop);
+        // Labels als JSON opslaan
+        w.setLabelsJson(labelsInput != null ? labelsInput : "[]");
+
+        return workshopRepository.save(w);
     }
 
-    private String saveImage(MultipartFile image) throws IOException {
-        if (image == null || image.isEmpty()) return null;
-        String imageFileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-        Path imagePath = uploadDir.resolve(imageFileName);
-        image.transferTo(imagePath.toFile());
-        return "/uploads/" + imageFileName;
+
+    public Workshop updateWorkshop(Long id, String name, String description, double duration,
+                                   MultipartFile image, MultipartFile[] media, MultipartFile[] files,
+                                   List<String> filesToRemove) throws IOException {
+
+        Workshop w = getWorkshop(id);
+        w.setName(name);
+        w.setDescription(description);
+        w.setDuration(duration);
+
+        if (image != null && !image.isEmpty()) w.setImagePath(saveFile(image));
+
+        if (filesToRemove != null && !filesToRemove.isEmpty()) {
+            w.getFiles().removeIf(filesToRemove::contains);
+            w.getDocuments().removeIf(filesToRemove::contains);
+        }
+
+        if (media != null) {
+            for (MultipartFile m : media) w.getFiles().add(saveFile(m));
+        }
+
+        if (files != null) {
+            for (MultipartFile f : files) w.getDocuments().add(saveFile(f));
+        }
+
+        // Labels niet wijzigen bij update tenzij je een aparte param toevoegt
+        // w.setLabelsJson(...);
+
+        return workshopRepository.save(w);
     }
 
     private String saveFile(MultipartFile file) throws IOException {
@@ -102,37 +125,6 @@ public class WorkshopService {
         Path filePath = uploadDir.resolve(fileName);
         file.transferTo(filePath.toFile());
         return "/uploads/" + fileName;
-    }
-
-    public Workshop updateWorkshop(Long id, String name, String description, double duration,
-                                   MultipartFile image, MultipartFile[] files, String filesToRemove) throws IOException {
-        Workshop workshop = getWorkshop(id);
-        workshop.setName(name);
-        workshop.setDescription(description);
-        workshop.setDuration(duration);
-
-        // Nieuwe afbeelding opslaan als er een is
-        if (image != null && !image.isEmpty()) {
-            String imagePath = saveImage(image);
-            workshop.setImagePath(imagePath);
-        }
-
-        // Verwijder bestanden die verwijderd moeten worden
-        if (filesToRemove != null && !filesToRemove.isEmpty()) {
-            List<String> removeList = new ObjectMapper().readValue(filesToRemove, List.class);
-            workshop.getFiles().removeIf(f -> removeList.contains(f));
-            // eventueel ook fysiek verwijderen van disk
-        }
-
-        // Nieuwe bestanden toevoegen
-        if (files != null && files.length > 0) {
-            for (MultipartFile f : files) {
-                String path = saveFile(f);
-                workshop.getFiles().add(path);
-            }
-        }
-
-        return workshopRepository.save(workshop);
     }
 
 }

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Workshop Keuze</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 <body>
 <header>
@@ -21,6 +23,7 @@
     <div class="workshop-grid" id="workshopGrid"></div>
 </main>
 
+
 <!-- Workshop Popup -->
 <div class="popup" id="workshopPopup">
     <div class="popup-content workshop-form">
@@ -34,13 +37,13 @@
             <!-- Left side -->
             <div class="popup-left">
                 <div class="media-upload">
-                    <p>Afbeelding / Video slideshow</p>
-                    <input type="file" id="workshopMedia" accept="image/*,video/*" multiple>
-                    <div id="mediaSlideshow" class="slideshow">
-                        <button id="prevMedia" class="slide-btn">&#10094;</button>
-                        <div id="mediaContainer"></div>
-                        <button id="nextMedia" class="slide-btn">&#10095;</button>
-                    </div>
+                    <div id="workshopPreview" class="slideshow" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
+
+                    <p>Afbeeldingen (max 5)</p>
+                    <input type="file" id="workshopImages" accept="image/*" multiple>
+
+                    <p>Video (max 1)</p>
+                    <input type="file" id="workshopVideo" accept="video/*">
                 </div>
 
                 <div class="download-section-upload">
@@ -79,6 +82,7 @@
     </div>
 </div>
 
+
 <!-- Workshop details popup -->
 <div id="workshopDetailsPopup" class="popup">
     <div class="popup-content workshop-form">
@@ -101,7 +105,7 @@
 
                 <div class="download-section-upload" id="detailFilesContainer">
                     <p>Download bestanden</p>
-                    <ul id="detailFileList"></ul>
+                    <ul id="workshopFilePreview"></ul>
                 </div>
             </div>
 
