@@ -620,8 +620,8 @@ main {
     padding: 0;
     margin: 0;
     list-style: none;
-    width: 100%;      /* laat de container vol breedte gebruiken */
-    box-sizing: border-box; /* zodat padding geen probleem geeft */
+    width: 100%;
+    box-sizing: border-box;
 }
 
 

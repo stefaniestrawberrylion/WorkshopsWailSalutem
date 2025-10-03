@@ -427,20 +427,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     li.appendChild(type);
 
                     // Download knop
-                    const actionBtn = document.createElement('button');
-                    actionBtn.textContent = 'Download';
-                    actionBtn.style.background = '#007bff';
-                    actionBtn.style.color = 'white';
-                    actionBtn.style.border = 'none';
-                    actionBtn.style.padding = '4px 10px';
-                    actionBtn.style.borderRadius = '4px';
-                    actionBtn.style.cursor = 'pointer';
-                    actionBtn.style.marginTop = '5px';
-                    actionBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        window.open(f.url, '_blank');
-                    });
-                    li.appendChild(actionBtn);
+                    // Download knop
+                    const downloadLink = document.createElement('a');
+                    downloadLink.textContent = 'Download';
+                    downloadLink.href = f.url;
+                    downloadLink.setAttribute('download', f.name);
+                    downloadLink.style.background = '#007bff';
+                    downloadLink.style.color = 'white';
+                    downloadLink.style.border = 'none';
+                    downloadLink.style.padding = '4px 10px';
+                    downloadLink.style.borderRadius = '4px';
+                    downloadLink.style.cursor = 'pointer';
+                    downloadLink.style.marginTop = '5px';
+                    downloadLink.style.textDecoration = 'none';
+                    downloadLink.style.display = 'inline-block';
+                    downloadLink.style.marginTop = '10px';
+                    downloadLink.addEventListener('click', (e) => e.stopPropagation());
+                    li.appendChild(downloadLink);
+
 
                     // Klik op kaart opent bestand
                     li.addEventListener('click', ()=>window.open(f.url, '_blank'));
