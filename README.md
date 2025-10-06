@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Project Inovation semester
 
 <img src="https://cdn.freebiesupply.com/logos/large/2x/hogeschool-utrecht-logo-png-transparent.png">
@@ -18,3 +19,7 @@ WailSalutemFoundation
 Contactpersoon: Rachid Kherrazi
 contact: Rachid.kherrazi@outlook.com
 
+=======
+# WorkshopsWailSalutem
+Dit is mijn eigen repo voor wailsalutem
+>>>>>>> bbc371c104d97a4435508b1641a9fb6140c1fb34
