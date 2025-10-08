@@ -1,4 +1,4 @@
-package workshop.presetation;
+package wailSalutem.workshop.presetation;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 @RequestMapping("/uploads")
 public class UploadController {
 
-    private final Path uploadDir = Paths.get(System.getProperty("user.home"), "workshop-uploads");
+    private final Path uploadDir = Paths.get(System.getProperty("user.home"), "wailSalutem.workshop-uploads");
 
     @GetMapping("/{filename:.+}")
     public ResponseEntity<Resource> getFile(@PathVariable String filename) throws MalformedURLException {

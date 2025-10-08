@@ -1,0 +1,217 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: all 0.3s ease;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #e0e0e0, #cfcfcf);
+}
+/* Topbar voor terugknop en logo */
+.top-bar {
+    position: absolute;
+    top: 20px;
+    left: 30%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 800px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    z-index: 10;
+}
+
+.back-link {
+    text-decoration: none;
+    color: #5481B7;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: #436c99;
+}
+
+
+/* Card container */
+.card-container {
+    position: relative;
+    width: 800px;
+    max-width: 95%;
+    height: 500px;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    perspective: 1500px;
+}
+
+/* Panelen */
+.panel {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    transition: all 0.8s cubic-bezier(0.77,0,0.175,1), z-index 0.8s;
+    position: relative;
+    border-radius: 20px;
+}
+
+/* Linker paneel */
+.left {
+    background: #ffffff;
+    z-index: 2;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* Rechter paneel */
+.right {
+    background: #5481B7;
+    color: white;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Teksten */
+h2, h3 {
+    margin-bottom: 0.5rem;
+}
+p {
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #333;
+}
+.right p, .right h3 {
+    color: white;
+}
+
+/* Inputs en knoppen */
+input {
+    margin: 0.7rem 0;
+    padding: 0.8rem 1rem;
+    width: 100%;
+    max-width: 260px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+}
+input:focus {
+    outline: none;
+    border-color: #365d87;
+    box-shadow: 0 0 6px #5481B7;
+}
+
+button {
+    margin-top: 1rem;
+    padding: 0.7rem 1.6rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+.left button {
+    background: #5481B7;
+    color: white;
+}
+.left button:hover {
+    background: #436c99;
+}
+.right button {
+    background: white;
+    color: #5481B7;
+}
+.right button:hover {
+    background: #f2f2f2;
+}
+
+/* Zorg dat alle panel-inhoud kolomsgewijs blijft */
+.login, .email-input, .default, .email-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Verberg email / extra info standaard */
+.left .email-input,
+.right .email-side {
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 0 2rem;
+}
+
+/* Animatie: panelen wisselen met slide + diepte */
+.card-container.show-email .left {
+    transform: translateX(100%) scale(0.95);
+    z-index: 1;
+    box-shadow: 0 0 40px rgba(0,0,0,0.2);
+}
+.card-container.show-email .right {
+    transform: translateX(-100%) scale(1);
+    z-index: 2;
+}
+
+/* Toon juiste content na switch */
+.card-container.show-email .left .login {
+    display: none;
+}
+.card-container.show-email .left .email-input {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+}
+.card-container.show-email .right .default {
+    display: none;
+}
+.card-container.show-email .right .email-side {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Reset naar originele posities */
+.card-container.reset .left {
+    transform: translateX(0) scale(1);
+    z-index: 2;
+}
+.card-container.reset .right {
+    transform: translateX(0) scale(1);
+    z-index: 1;
+}
+.card-container.reset .left .login {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+}
+.card-container.reset .left .email-input {
+    display: none;
+}
+.card-container.reset .right .default {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+}
+.card-container.reset .right .email-side {
+    display: none;
+}

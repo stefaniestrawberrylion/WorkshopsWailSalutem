@@ -1,4 +1,4 @@
-package workshop.presetation;
+package wailSalutem.workshop.presetation;
 
 import java.util.List;
 

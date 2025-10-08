@@ -1,9 +1,9 @@
 # Betreft robot project
 
 Inleiding
-Op dit moment ligt de opdracht er om een workshop te ontwikkelen voor kinderen rond computer vision, waarbij gebruikgemaakt wordt van een Vinci Bot met cameramodule. Hoewel dit uitvoerbaar is, willen wij als projectgroep een alternatieve aanpak voorleggen: het zelf bouwen van een vergelijkbare robot.
+Op dit moment ligt de opdracht er om een wailSalutem.workshop te ontwikkelen voor kinderen rond computer vision, waarbij gebruikgemaakt wordt van een Vinci Bot met cameramodule. Hoewel dit uitvoerbaar is, willen wij als projectgroep een alternatieve aanpak voorleggen: het zelf bouwen van een vergelijkbare robot.
 
-Wij zien hierin duidelijke voordelen voor onszelf als team, voor de kwaliteit en meerwaarde van het project, én voor de workshop en eindgebruikers.
+Wij zien hierin duidelijke voordelen voor onszelf als team, voor de kwaliteit en meerwaarde van het project, én voor de wailSalutem.workshop en eindgebruikers.
 
 ### 1. Leeropbrengst voor ons als HBO-ICT team
 
@@ -23,17 +23,17 @@ Leeruitkomsten halen: Voor dit semester moeten we kunnen aantonen dat we een bep
 
 Controle over functionaliteit: bij een standaard robot zijn we gebonden aan bestaande modules. Met een eigen ontwerp kunnen we gericht keuzes maken die passen bij de doelstellingen (bijvoorbeeld eenvoudige en privacyvriendelijke vision-functies).
 
-Flexibiliteit en uitbreidbaarheid: mocht er in de toekomst een wens komen om de workshop uit te breiden of andere functies te demonstreren, dan kan dat veel eenvoudiger met een platform dat we zelf begrijpen en beheersen.
+Flexibiliteit en uitbreidbaarheid: mocht er in de toekomst een wens komen om de wailSalutem.workshop uit te breiden of andere functies te demonstreren, dan kan dat veel eenvoudiger met een platform dat we zelf begrijpen en beheersen.
 
 Onderzoekswaarde: we kunnen meten en vergelijken hoe vision lokaal op de robot werkt versus via een externe server. Dit levert nuttige inzichten op voor toekomstige projecten en toepassingen.
 
 Doordat we het zelf maken bevordert dit de hoeveelheid van het project dat open source is. Door gebruik te maken van Algemeen verkrijgbare/gestandaardiseerde onderdelen of mogelijk zelfs 3D print baar
 
-Ook is het hierdoor mogelijk om de workshop uit te bereiden met mogelijk een 3Dprint cursus.
+Ook is het hierdoor mogelijk om de wailSalutem.workshop uit te bereiden met mogelijk een 3Dprint cursus.
 
 
 
-### 3. Waarde voor de workshop en eindgebruikers
+### 3. Waarde voor de wailSalutem.workshop en eindgebruikers
 
 Privacy & veiligheid: door zelf te bepalen welke algoritmes draaien, kunnen we garanderen dat er géén persoonsgegevens verwerkt of opgeslagen worden.
 
@@ -56,6 +56,6 @@ benutten wij als team onze capaciteiten optimaal,
 
 vergroten we de onderzoeks- en onderwijswaarde van het project,
 
-en creëren we een flexibele, privacyvriendelijke en leerzame workshop.
+en creëren we een flexibele, privacyvriendelijke en leerzame wailSalutem.workshop.
 
 Wij geloven dat dit voor zowel ons als de opdrachtgever meer oplevert en stellen daarom voor om dit pad te bewandelen.

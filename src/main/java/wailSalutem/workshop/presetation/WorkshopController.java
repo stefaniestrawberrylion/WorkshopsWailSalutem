@@ -1,14 +1,14 @@
-package workshop.presetation;
+package wailSalutem.workshop.presetation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import workshop.presetation.WorkshopDTO;
-import workshop.service.WorkshopService;
-import workshop.domain.Workshop;
+import wailSalutem.workshop.service.WorkshopService;
+import wailSalutem.workshop.domain.Workshop;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -25,34 +25,38 @@ public class WorkshopController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public List<WorkshopDTO> getAllWorkshops() {
         return service.getAllWorkshops().stream()
                 .map(this::toDTO)
                 .toList();
     }
 
+
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public WorkshopDTO getWorkshop(@PathVariable Long id) {
         Workshop w = service.getWorkshop(id);
         return toDTO(w);
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<WorkshopDTO> createWorkshop(
             @RequestParam String name,
             @RequestParam String description,
             @RequestParam double duration,
-            @RequestParam(required = false) MultipartFile image,        // hoofdafbeelding
-            @RequestParam(required = false) MultipartFile[] media,      // afbeeldingen + video
-            @RequestParam(required = false) MultipartFile[] files,      // documenten
+            @RequestParam(required = false) MultipartFile image,
+            @RequestParam(required = false) MultipartFile[] media,
+            @RequestParam(required = false) MultipartFile[] files,
             @RequestParam(required = false) String labels
     ) throws IOException {
-
         Workshop workshop = service.saveWorkshop(name, description, duration, image, media, files, labels);
         return ResponseEntity.ok(toDTO(workshop));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public WorkshopDTO updateWorkshop(
             @PathVariable Long id,
             @RequestParam String name,
@@ -63,12 +67,12 @@ public class WorkshopController {
             @RequestParam(required = false) MultipartFile[] files,
             @RequestParam(required = false) List<String> filesToRemove
     ) throws IOException {
-
         Workshop updatedWorkshop = service.updateWorkshop(id, name, description, duration, image, media, files, filesToRemove);
         return toDTO(updatedWorkshop);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteWorkshop(@PathVariable Long id) {
         service.deleteWorkshop(id);
     }

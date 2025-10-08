@@ -1,10 +1,9 @@
-package workshop.service;
+package wailSalutem.workshop.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import workshop.data.WorkshopRepository;
-import workshop.domain.Workshop;
+import wailSalutem.workshop.data.WorkshopRepository;
+import wailSalutem.workshop.domain.Workshop;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,14 +11,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 @Service
 public class WorkshopService {
 
     private final WorkshopRepository workshopRepository;
-    private final Path uploadDir = Paths.get(System.getProperty("user.home"), "workshop-uploads");
+    private final Path uploadDir = Paths.get(System.getProperty("user.home"), "wailSalutem.workshop-uploads");
 
     public WorkshopService(WorkshopRepository workshopRepository) {
         this.workshopRepository = workshopRepository;

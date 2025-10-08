@@ -1,4 +1,4 @@
-package workshop.domain;
+package wailSalutem.workshop.domain;
 
 import jakarta.persistence.*;
 import java.util.List;

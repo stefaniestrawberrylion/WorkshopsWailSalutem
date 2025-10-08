@@ -1,8 +1,8 @@
-package workshop.data;
+package wailSalutem.workshop.data;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import workshop.domain.Workshop;
+import wailSalutem.workshop.domain.Workshop;
 
 @Repository
 public interface WorkshopRepository extends JpaRepository<Workshop, Long> {
