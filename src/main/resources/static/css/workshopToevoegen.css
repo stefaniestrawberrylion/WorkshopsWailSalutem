@@ -246,10 +246,12 @@ main {
     z-index: 1000;
 }
 
+/* Vergrote workshop popup */
 .popup-content.workshop-form {
-    width: 900px;
-    height: 600px;                 /* vaste hoogte */
+    width: 1200px;        /* breder */
+    height: 800px;        /* hoger */
     max-width: 95%;
+    max-height: 95%;
     background: #f1f4f8;
     border-radius: 20px;
     overflow: hidden;
@@ -259,13 +261,22 @@ main {
     position: relative;
 }
 
+/* Optioneel: popup-body past zich automatisch aan */
 .popup-body {
     display: flex;
     gap: 20px;
     padding: 20px;
-    overflow-y: auto;             /* zorgt dat er binnen de popup gescrold kan worden */
-    flex: 1;                      /* neemt de resterende hoogte netjes in */
+    overflow-y: auto;
+    flex: 1;
     box-sizing: border-box;
+}
+
+/* Left en right pane nemen gelijkmatig de ruimte */
+.popup-left, .popup-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .popup-header {
