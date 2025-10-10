@@ -1,6 +1,8 @@
 package wailSalutem.workshop.domain;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,7 +18,7 @@ public class Workshop {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    private double duration;
+    private String duration;
 
     private String imagePath;
 
@@ -36,7 +38,8 @@ public class Workshop {
     private List<String> reviews;
 
     @ElementCollection
-    private List<String> documents;
+    @CollectionTable(name = "workshop_documents", joinColumns = @JoinColumn(name = "workshop_id"))
+    private List<DocumentInfo> documents = new ArrayList<>();
 
     @Lob
     @Column(columnDefinition = "TEXT")
@@ -53,8 +56,10 @@ public class Workshop {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public double getDuration() { return duration; }
-    public void setDuration(double duration) { this.duration = duration; }
+    public String getDuration() { return duration; }
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
 
     public String getImagePath() { return imagePath; }
     public void setImagePath(String imagePath) { this.imagePath = imagePath; }
@@ -67,13 +72,10 @@ public class Workshop {
     public List<String> getReviews() { return reviews; }
     public void setReviews(List<String> reviews) { this.reviews = reviews; }
 
-    public List<String> getDocuments() {
-        return documents;
-    }
 
-    public void setDocuments(List<String> documents) {
-        this.documents = documents;
-    }
+    public List<DocumentInfo> getDocuments() { return documents; }
+    public void setDocuments(List<DocumentInfo> documents) { this.documents = documents; }
     public String getLabelsJson() { return labelsJson; }
     public void setLabelsJson(String labelsJson) { this.labelsJson = labelsJson; }
+
 }

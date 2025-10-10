@@ -261,23 +261,57 @@ main {
     position: relative;
 }
 
-/* Optioneel: popup-body past zich automatisch aan */
+/* Popup body - volledige beschikbare breedte gebruiken */
 .popup-body {
     display: flex;
     gap: 20px;
     padding: 20px;
-    overflow-y: auto;
     flex: 1;
     box-sizing: border-box;
+    width: 100%;
 }
 
-/* Left en right pane nemen gelijkmatig de ruimte */
-.popup-left, .popup-right {
-    flex: 1;
+/* Linker paneel */
+.popup-left {
+    flex: 2;  /* linker paneel twee keer zo breed als rechter */
+    min-width: 600px; /* voorkomt dat het te smal wordt */
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
+
+/* Rechter paneel */
+.popup-right {
+    flex: 1;  /* rechter paneel smaller */
+    min-width: 300px; /* voorkomt dat het te smal wordt */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Optioneel: inputs en buttons strekken volledig uit in rechter paneel */
+.popup-right input[type="text"],
+.popup-right textarea,
+.popup-right select,
+.popup-right button {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Flex-grow fix zodat rechterpaneel netjes rechts blijft */
+.popup-content.workshop-form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.popup-body {
+    display: flex;
+    flex: 1;
+    justify-content: space-between; /* linker en rechter paneel netjes gescheiden */
+    overflow-y: auto;
+}
+
 
 .popup-header {
     background: #5481B7;
@@ -294,19 +328,6 @@ main {
     cursor: pointer;
     transform: scale(1.1);
 }
-/*.popup-body {*/
-/*    display: flex;*/
-/*    gap: 20px;*/
-/*    padding: 20px;*/
-/*}*/
-
-.popup-left, .popup-right {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
 .media-upload, .download-section-upload {
     background: white;
     border-radius: 15px;
@@ -679,4 +700,190 @@ main {
 
 .remove-file-btn:hover {
     color: #e60000;
+}
+
+/* Container voor alle file-categories */
+.popup-right {
+    display: flex;
+    flex-direction: column; /* alles onder elkaar */
+    gap: 15px;              /* ruimte tussen de blokken */
+}
+
+/* Elk file-category blok */
+.file-category {
+    display: flex;
+    flex-direction: column;
+    background: #f1f4f8;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Header van het blok */
+.file-category-header {
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #5481B7;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+/* Content van het blok (bestanden) */
+.file-category-content {
+    display: none; /* standaard dicht, kan open via JS */
+    flex-direction: column;
+    margin-top: 10px;
+    gap: 8px;
+}
+
+/* Lijst van bestanden */
+.category-file-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+/* Maak detail media kleiner (minder hoog) */
+#detailMediaContainer img,
+#detailMediaContainer video {
+    width: 100%;
+    max-height: 250px; /* verkleind (was 400) */
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
+}
+
+/* Zorg dat detail file-categorieën dezelfde styling hebben als in create popup */
+/* file-category / file-category-header / file-category-content reeds in je CSS, hier alleen kleine tweak */
+#detailFilesContainer .file-category {
+    background: #f1f4f8;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+/* toon de header pointer */
+#detailFilesContainer .file-category-header {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #5481B7;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+#detailFilesContainer .file-category-content {
+    display: none; /* start gesloten */
+    margin-top: 10px;
+    gap: 8px;
+}
+
+#detailFilesContainer .file-category-content .file-card {
+    width: calc(48% - 6px);
+    display: inline-block;
+}
+
+/* kleine responsive fix: in detail paneel maak lists full width on small screens */
+@media (max-width: 900px) {
+    #detailFilesContainer .file-category-content .file-card {
+        width: 100%;
+    }
+    .popup-content.workshop-form { width: 95%; height: 90%; }
+}
+
+/* --- Detail popup verbeteringen --- */
+
+/* 1️⃣  Minder ruimte tussen file-categorieën */
+#detailFilesContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* was waarschijnlijk groter (zoals 15px) */
+}
+
+/* 2️⃣  Media-afbeelding kleiner maken */
+#detailMediaContainer img,
+#detailMediaContainer video {
+    width: 100%;
+    max-width: 350px; /* pas aan voor gewenste grootte */
+    height: auto;
+    border-radius: 10px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* 3️⃣  Pijltjes naast de afbeelding plaatsen */
+.media-upload {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#prevDetailMedia,
+#nextDetailMedia {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 10;
+}
+
+#prevDetailMedia {
+    left: 10px; /* Links naast de media */
+}
+
+#nextDetailMedia {
+    right: 10px; /* Rechts naast de media */
+}
+
+/* Hover-effect voor duidelijkheid */
+#prevDetailMedia:hover,
+#nextDetailMedia:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+/* === Lightbox-stijl === */
+.lightbox {
+    display: none; /* verborgen standaard */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.lightbox img,
+.lightbox video {
+    max-width: 90%;
+    max-height: 85%;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.close-lightbox {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
 }

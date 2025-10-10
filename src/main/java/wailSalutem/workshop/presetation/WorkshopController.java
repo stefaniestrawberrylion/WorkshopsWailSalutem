@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import wailSalutem.workshop.domain.DocumentInfo;
 import wailSalutem.workshop.service.WorkshopService;
 import wailSalutem.workshop.domain.Workshop;
 
@@ -45,15 +46,33 @@ public class WorkshopController {
     public ResponseEntity<WorkshopDTO> createWorkshop(
             @RequestParam String name,
             @RequestParam String description,
-            @RequestParam double duration,
+            @RequestParam String duration,
             @RequestParam(required = false) MultipartFile image,
             @RequestParam(required = false) MultipartFile[] media,
-            @RequestParam(required = false) MultipartFile[] files,
+            @RequestParam(required = false) MultipartFile[] instructionsFiles,
+            @RequestParam(required = false) MultipartFile[] manualsFiles,
+            @RequestParam(required = false) MultipartFile[] demoFiles,
+            @RequestParam(required = false) MultipartFile[] worksheetsFiles,
             @RequestParam(required = false) String labels
     ) throws IOException {
-        Workshop workshop = service.saveWorkshop(name, description, duration, image, media, files, labels);
+
+        Workshop workshop = service.saveWorkshop(
+                name,
+                description,
+                duration,
+                image,
+                media,
+                instructionsFiles,
+                manualsFiles,
+                demoFiles,
+                worksheetsFiles,
+                labels
+        );
+
         return ResponseEntity.ok(toDTO(workshop));
     }
+
+
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -61,7 +80,7 @@ public class WorkshopController {
             @PathVariable Long id,
             @RequestParam String name,
             @RequestParam String description,
-            @RequestParam double duration,
+            @RequestParam String duration,
             @RequestParam(required = false) MultipartFile image,
             @RequestParam(required = false) MultipartFile[] media,
             @RequestParam(required = false) MultipartFile[] files,
@@ -86,7 +105,7 @@ public class WorkshopController {
         dto.setDuration(w.getDuration());
         dto.setImageUrl(w.getImagePath());
 
-        // Media files
+        // Media files (images & video)
         dto.setFiles(w.getFiles() != null ? w.getFiles().stream()
                 .map(f -> {
                     String fileLower = f.toLowerCase();
@@ -96,9 +115,11 @@ public class WorkshopController {
                 .toList() : List.of());
 
         // Documenten
-        dto.setDocuments(w.getDocuments() != null ? w.getDocuments().stream()
-                .map(f -> new FileDTO(f.substring(f.lastIndexOf("/") + 1), f, "document"))
-                .toList() : List.of());
+        dto.setDocuments(
+                w.getDocuments() != null ? w.getDocuments().stream()
+                        .map(doc -> new FileDTO(doc.getName(), doc.getUrl(), doc.getCategory()))
+                        .toList() : List.of()
+        );
 
         // Labels vanuit JSON
         try {
@@ -112,6 +133,7 @@ public class WorkshopController {
 
         return dto;
     }
+
 
 
 }

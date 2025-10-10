@@ -6,10 +6,10 @@ public class WorkshopDTO {
     private Long id;
     private String name;
     private String description;
-    private double duration;
+    private String duration;
     private String imageUrl;
     private List<FileDTO> files;
-    private List<LabelDTO> labels; // ✅ LabelDTO ipv String
+    private List<LabelDTO> labels;
     private List<String> reviews;
     private List<FileDTO> documents;
 
@@ -23,8 +23,8 @@ public class WorkshopDTO {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public double getDuration() { return duration; }
-    public void setDuration(double duration) { this.duration = duration; }
+    public String getDuration() { return duration; }
+    public void setDuration(String duration) { this.duration = duration; }
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }

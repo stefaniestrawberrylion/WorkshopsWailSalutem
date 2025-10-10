@@ -5,13 +5,10 @@
     <title>Workshop Keuze</title>
     <link rel="stylesheet" href="../css/workshopToevoegen.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 </head>
 <body>
 <header>
-    <div class="logo">
-        <img src="../image/logo.png" alt="WAIL Salutem Logo">
-    </div>
+    <div class="logo"><img src="../image/logo.png" alt="Logo"></div>
     <div class="search-container">
         <span class="icon" id="searchIcon">🔍</span>
         <input type="text" id="searchInput" placeholder="Zoek workshops...">
@@ -23,118 +20,152 @@
     <div class="workshop-grid" id="workshopGrid"></div>
 </main>
 
-<!-- Workshop Popup -->
+<!-- Workshop toevoegen popup -->
 <div class="popup" id="workshopPopup">
     <div class="popup-content workshop-form">
         <span class="close" id="closePopupBtn">&times;</span>
-
-        <div class="popup-header">
-            <img src="../image/logo.png" alt="WAIL Salutem Logo" class="popup-logo">
-        </div>
+        <div class="popup-header"><img src="../image/logo.png" class="popup-logo"></div>
 
         <div class="popup-body">
-            <!-- Left side -->
             <div class="popup-left">
                 <div class="media-upload">
-                    <div id="workshopPreview" class="slideshow" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
-
                     <p>Afbeeldingen (max 5)</p>
                     <input type="file" id="workshopImages" accept="image/*" multiple>
-
                     <p>Video (max 1)</p>
                     <input type="file" id="workshopVideo" accept="video/*">
+                    <div id="workshopPreview"></div>
                 </div>
 
-                <div class="download-section-upload">
-                    <p>Download bestanden</p>
-                    <input type="file" id="workshopFiles" multiple>
-                    <ul id="fileList"></ul>
-                </div>
-            </div>
-
-            <!-- Right side -->
-            <div class="popup-right">
-                <label for="workshopName">Naam</label>
-                <input type="text" id="workshopName" placeholder="Naam">
-
-                <label for="workshopDesc">Omschrijving</label>
-                <textarea id="workshopDesc" placeholder="Omschrijving"></textarea>
-
-                <label for="workshopDuration">Duur</label>
-                <input type="time" id="workshopDuration" step="60">
-
-                <label for="workshopLabelInput">Labels</label>
-                <div style="display:flex; gap:5px; align-items:center;">
-                    <input type="text" id="workshopLabelInput" placeholder="Label naam">
-                    <input type="color" id="workshopLabelColor" value="#5481B7">
-                    <button type="button" id="addLabelBtn">➕</button>
-                </div>
-
-                <div id="labelPreview" style="margin-top:10px; display:flex; flex-wrap:wrap; gap:5px;"></div>
-
-                <div class="popup-buttons">
-                    <button id="closePopupBtnCancel" class="btn-secondary">Annuleren</button>
-                    <button id="saveWorkshopBtn" class="btn-primary">Opslaan</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- Workshop details popup -->
-<div id="workshopDetailsPopup" class="popup">
-    <div class="popup-content workshop-form">
-        <span id="closeDetailsPopupBtn" class="close">&times;</span>
-
-        <div class="popup-header">
-            <img src="../image/logo.png" alt="WAIL Salutem Logo" class="popup-logo">
-        </div>
-
-        <div class="popup-body">
-            <div class="popup-left">
-                <div class="media-upload">
-                    <p>Afbeelding / Video slideshow</p>
-                    <div id="detailSlideshow" class="slideshow">
-                        <button id="prevDetailMedia" class="slide-btn">&#10094;</button>
-                        <div id="detailMediaContainer"></div>
-                        <button id="nextDetailMedia" class="slide-btn">&#10095;</button>
+                <!-- Nieuwe dropdown structuur met juiste id's -->
+                <div class="file-category" data-category="instructions">
+                    <div class="file-category-header">Instructies <i class="fa fa-chevron-down"></i></div>
+                    <div class="file-category-content">
+                        <div class="file-upload">
+                            <input type="file" multiple class="file-input" data-type="instructions" id="instructionsInput">
+                        </div>
+                        <ul class="category-file-list" id="instructionsList"></ul>
                     </div>
                 </div>
 
-                <div class="download-section-upload" id="detailFilesContainer">
-                    <p>Download bestanden</p>
-                    <ul id="workshopFilePreview"></ul>
+                <div class="file-category" data-category="manuals">
+                    <div class="file-category-header">Handleiding <i class="fa fa-chevron-down"></i></div>
+                    <div class="file-category-content">
+                        <div class="file-upload">
+                            <input type="file" multiple class="file-input" data-type="manuals" id="manualsInput">
+                        </div>
+                        <ul class="category-file-list" id="manualsList"></ul>
+                    </div>
+                </div>
+
+                <div class="file-category" data-category="demo">
+                    <div class="file-category-header">Demo code <i class="fa fa-chevron-down"></i></div>
+                    <div class="file-category-content">
+                        <div class="file-upload">
+                            <input type="file" multiple class="file-input" data-type="demo" id="demoInput">
+                        </div>
+                        <ul class="category-file-list" id="demoList"></ul>
+                    </div>
+                </div>
+
+                <div class="file-category" data-category="worksheets">
+                    <div class="file-category-header">Werkbladeren <i class="fa fa-chevron-down"></i></div>
+                    <div class="file-category-content">
+                        <div class="file-upload">
+                            <input type="file" multiple class="file-input" data-type="worksheets" id="worksheetsInput">
+                        </div>
+                        <ul class="category-file-list" id="worksheetsList"></ul>
+                    </div>
                 </div>
             </div>
 
             <div class="popup-right">
-                <label for="detailName">Naam</label>
-                <input type="text" id="detailName" readonly>
-
-                <label for="detailDesc">Omschrijving</label>
-                <textarea id="detailDesc" readonly></textarea>
-
-                <label for="detailDuration">Duur</label>
-                <input type="time" id="detailDuration" readonly>
+                <label>Naam</label><input type="text" id="workshopName">
+                <label>Omschrijving</label><textarea id="workshopDesc"></textarea>
+                <label>Duur</label><input type="time" id="workshopDuration" step="60">
 
                 <label>Labels</label>
-                <div id="detailLabelPreview" style="display:flex; flex-wrap:wrap; gap:5px;"></div>
-
+                <div style="display:flex;gap:5px">
+                    <input type="text" id="workshopLabelInput" placeholder="Label naam">
+                    <input type="color" id="workshopLabelColor" value="#5481B7">
+                    <button id="addLabelBtn">➕</button>
+                </div>
+                <div id="labelPreview"></div>
 
                 <div class="popup-buttons">
-                    <button id="updateWorkshopBtn" class="btn-primary">Opslaan</button>
-                    <button id="deleteWorkshopBtn" class="btn-secondary">Verwijderen</button>
+                    <button class="btn-secondary" id="closePopupBtnCancel">Annuleren</button>
+                    <button class="btn-primary" id="saveWorkshopBtn">Opslaan</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Language Switcher -->
-<div class="language-switcher">
-    <img src="../image/Schermafbeelding%202025-09-19%20143713.png" alt="Nederlands" class="flag" onclick="switchLanguage('nl')">
-    <img src="../image/Schermafbeelding%202025-09-19%20143613.png" alt="English" class="flag" onclick="switchLanguage('en')">
+<!-- Detail popup -->
+<div class="popup" id="workshopDetailsPopup">
+    <div class="popup-content workshop-form">
+        <span class="close" id="closeDetailsPopupBtn">&times;</span>
+        <div class="popup-header"><img src="../image/logo.png" class="popup-logo"></div>
+
+        <div class="popup-body">
+            <div class="popup-left">
+                <div class="media-upload">
+                    <div id="detailMediaContainer"></div>
+                    <button id="prevDetailMedia">◀</button>
+                    <button id="nextDetailMedia">▶</button>
+                </div>
+                <!-- Bestanden per categorie (zelfde structuur als create popup) -->
+                <div id="detailFilesContainer">
+                    <div class="file-category" data-category="instructions">
+                        <div class="file-category-header">Instructies <i class="fa fa-chevron-down"></i></div>
+                        <div class="file-category-content">
+                            <ul class="category-file-list" id="detail_instructionsList"></ul>
+                        </div>
+                    </div>
+
+                    <div class="file-category" data-category="manuals">
+                        <div class="file-category-header">Handleiding <i class="fa fa-chevron-down"></i></div>
+                        <div class="file-category-content">
+                            <ul class="category-file-list" id="detail_manualsList"></ul>
+                        </div>
+                    </div>
+
+                    <div class="file-category" data-category="demo">
+                        <div class="file-category-header">Demo code <i class="fa fa-chevron-down"></i></div>
+                        <div class="file-category-content">
+                            <ul class="category-file-list" id="detail_demoList"></ul>
+                        </div>
+                    </div>
+
+                    <div class="file-category" data-category="worksheets">
+                        <div class="file-category-header">Werkbladeren <i class="fa fa-chevron-down"></i></div>
+                        <div class="file-category-content">
+                            <ul class="category-file-list" id="detail_worksheetsList"></ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="popup-right">
+                <label>Naam</label><input type="text" id="detailName" readonly>
+                <label>Omschrijving</label><textarea id="detailDesc" readonly></textarea>
+                <label>Duur</label><input type="time" id="detailDuration" readonly>
+                <label>Labels</label><div id="detailLabelPreview"></div>
+
+
+                <div class="popup-buttons">
+                    <button class="btn-primary" id="updateWorkshopBtn">Opslaan</button>
+                    <button class="btn-secondary" id="deleteWorkshopBtn">Verwijderen</button>
+                </div>
+            </div>
+        </div>
+        <!-- Lightbox voor mediaweergave -->
+        <div id="mediaLightbox" class="lightbox">
+            <span class="close-lightbox">&times;</span>
+            <img id="lightboxImage" src="" alt="Vergrote weergave">
+            <video id="lightboxVideo" controls></video>
+        </div>
+
+    </div>
 </div>
 
 <script src="../js/workshopToevoegen.js"></script>
