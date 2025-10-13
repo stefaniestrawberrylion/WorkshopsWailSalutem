@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+
 <header>
     <div class="logo"><img src="../image/logo.png" alt="Logo"></div>
     <div class="search-container">
@@ -14,6 +15,11 @@
         <input type="text" id="searchInput" placeholder="Zoek workshops...">
     </div>
 </header>
+<!-- Foutmelding container -->
+<div id="errorContainer" class="error-container" style="display:none;">
+    <span id="errorMessage"></span>
+    <button id="closeErrorBtn">&times;</button>
+</div>
 
 <main>
     <button class="workshop-button" id="addWorkshopBtn">Workshop toevoegen</button>
@@ -23,18 +29,24 @@
 <!-- Workshop toevoegen popup -->
 <div class="popup" id="workshopPopup">
     <div class="popup-content workshop-form">
+        <!-- Popup foutmelding container -->
+        <div id="popupErrorContainer" class="error-container" style="display:none;">
+            <span id="popupErrorMessage"></span>
+            <button id="closePopupErrorBtn">&times;</button>
+        </div>
         <span class="close" id="closePopupBtn">&times;</span>
         <div class="popup-header"><img src="../image/logo.png" class="popup-logo"></div>
 
         <div class="popup-body">
             <div class="popup-left">
                 <div class="media-upload">
-                    <p>Afbeeldingen (max 5)</p>
-                    <input type="file" id="workshopImages" accept="image/*" multiple>
-                    <p>Video (max 1)</p>
-                    <input type="file" id="workshopVideo" accept="video/*">
-                    <div id="workshopPreview"></div>
+                    <div id="workshopPreview" class="preview-container"></div> <!-- previews bovenaan -->
+
+                    <div class="upload-buttons">
+                        <input type="file" id="workshopImages" accept="image/*, video/*" multiple>
+                    </div>
                 </div>
+
 
                 <!-- Nieuwe dropdown structuur met juiste id's -->
                 <div class="file-category" data-category="instructions">

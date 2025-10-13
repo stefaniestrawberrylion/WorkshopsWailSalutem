@@ -887,3 +887,217 @@ main {
     font-size: 30px;
     cursor: pointer;
 }
+/* container block */
+.media-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: #f9fafc;
+    border-radius: 12px;
+    border: 1px solid #e3e6ea;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* galerij voor previews */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* flexibele kolommen */
+    gap: 12px;
+}
+.preview-container {
+    display: grid; /* of flex */
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* flexibele kolommen */
+    gap: 12px;
+}
+
+.preview-thumb {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f1f4f8;
+    border: 1px solid #d9dee5;
+    width: 100%; /* laat staan voor grid: grid bepaalt breedte */
+    aspect-ratio: 16/11;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+.preview-thumb:hover {
+    transform: scale(1.03);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.preview-thumb img,
+.preview-thumb video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* upload buttons onderaan */
+.upload-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.upload-buttons input[type="file"] {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccd3db;
+    background: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.upload-buttons input[type="file"]:hover {
+    border-color: #5481B7;
+    background: #f3f6fa;
+}
+
+#workshopPreview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.preview-thumb img,
+.preview-thumb video {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/11;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+
+
+/* ------ Labels: kleine nette plus-knop en preview ------ */
+#workshopLabelInput {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+#workshopLabelColor {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 6px;
+    border: 1px solid #cfcfcf;
+    box-sizing: border-box;
+}
+
+/* Maak de plus-knop klein en inline met velden */
+#addLabelBtn {
+    width: 44px;
+    height: 40px;
+    padding: 0;
+    font-size: 20px;
+    line-height: 1;
+    border-radius: 6px;
+    border: 1px solid #d0d0d0;
+    background: white;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* hover / active states */
+#addLabelBtn:hover { background: #f4f6f8; }
+#addLabelBtn:active { transform: translateY(1px); }
+
+/* preview labels */
+#labelPreview,
+#detailLabelPreview {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+    align-items: center;
+}
+
+/* stijl elk label */
+#labelPreview span,
+#detailLabelPreview span {
+    padding: 6px 10px;
+    border-radius: 6px;
+    color: white;
+    font-weight: 600;
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    min-height: 30px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    border: 2px solid rgba(0,0,0,0.06);
+}
+
+/* kleine verwijder-X binnen label */
+#labelPreview span .remove-label {
+    margin-left: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    background: rgba(255,255,255,0.15);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* responsive fix: voorkom dat rechterpaneel te smal wordt */
+@media (max-width: 1100px) {
+    .popup-left { min-width: 420px; }
+    .popup-right { min-width: 260px; }
+}
+.upload-error {
+    color: #d93025; /* rood */
+    background: #fdecea;
+    border: 1px solid #f5c6cb;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-top: 8px;
+    display: none; /* pas zichtbaar bij fout */
+}
+
+.upload-error.show {
+    display: block;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.error-container {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin: 10px auto;
+    width: 90%;
+    max-width: 800px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+#errorContainer button {
+    background: none;
+    border: none;
+    color: #721c24;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

@@ -52,6 +52,34 @@ document.addEventListener('DOMContentLoaded', () => {
             "Authorization": token && token.startsWith("Bearer ") ? token : "Bearer " + token
         };
     }
+    function showError(message) {
+        const popup = document.getElementById('workshopPopup');
+        const popupVisible = popup && popup.style.display === 'block';
+
+        const container = popupVisible
+            ? document.getElementById('popupErrorContainer')
+            : document.getElementById('errorContainer');
+
+        const messageBox = popupVisible
+            ? document.getElementById('popupErrorMessage')
+            : document.getElementById('errorMessage');
+
+        const closeBtn = popupVisible
+            ? document.getElementById('closePopupErrorBtn')
+            : document.getElementById('closeErrorBtn');
+
+        if (!container || !messageBox) return;
+
+        messageBox.textContent = message;
+        container.style.display = 'flex';
+
+        closeBtn.onclick = () => container.style.display = 'none';
+
+        clearTimeout(window.errorTimeout);
+        window.errorTimeout = setTimeout(() => {
+            container.style.display = 'none';
+        }, 5000);
+    }
 
     // =======================
     // Open/Close popup
@@ -79,34 +107,56 @@ document.addEventListener('DOMContentLoaded', () => {
     // =======================
     // Media selecteren (afbeeldingen + video)
     // =======================
-    if(workshopImagesInput){
+    // =======================
+// Media selecteren (afbeeldingen + video) met betere validatie
+// =======================
+    if (workshopImagesInput) {
         workshopImagesInput.addEventListener('change', e => {
             const files = Array.from(e.target.files);
-            files.forEach(file => {
-                if(file.type.startsWith('image/') && selectedMedia.filter(f=>f.type.startsWith('image/')).length >= 5){
-                    alert('Max 5 afbeeldingen toegestaan');
-                    return;
+            if (files.length === 0) return;
+
+            const imageCount = selectedMedia.filter(f => f.type.startsWith('image/')).length;
+            const videoCount = selectedMedia.filter(f => f.type.startsWith('video/')).length;
+
+            let addedImages = 0;
+            let addedVideo = 0;
+            let errorOccurred = false;
+
+            for (const file of files) {
+                if (file.type.startsWith('image/')) {
+                    if (imageCount + addedImages >= 5) {
+                        showError('Maximaal 5 afbeeldingen toegestaan.');
+                        errorOccurred = true;
+                        break;
+                    }
+                    selectedMedia.push(file);
+                    addedImages++;
+                } else if (file.type.startsWith('video/')) {
+                    if (videoCount + addedVideo >= 1) {
+                        showError('Slechts 1 video toegestaan.');
+                        errorOccurred = true;
+                        break;
+                    }
+                    selectedMedia.push(file);
+                    addedVideo++;
+                } else {
+                    showError(`Ongeldig bestandstype: ${file.name}`);
+                    errorOccurred = true;
+                    break;
                 }
-                selectedMedia.push(file);
-            });
+            }
+
+            // Reset input bij fout
+            if (errorOccurred) {
+                workshopImagesInput.value = '';
+                return;
+            }
+
             workshopImagesInput.value = '';
             updateMediaPreview();
         });
     }
 
-    if(workshopVideoInput){
-        workshopVideoInput.addEventListener('change', e => {
-            const file = e.target.files[0];
-            if(!file) return;
-            if(selectedMedia.some(f=>f.type.startsWith('video/'))){
-                alert('Max 1 video toegestaan');
-                return;
-            }
-            selectedMedia.push(file);
-            workshopVideoInput.value = '';
-            updateMediaPreview();
-        });
-    }
 
     // =======================
     // Documenten selecteren
@@ -156,9 +206,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const reader = new FileReader();
             reader.onload = e => {
                 const el = document.createElement('div');
-                el.style.position = 'relative';
-                el.style.display = 'inline-block';
-                el.style.marginRight = '5px';
+                el.classList.add('preview-thumb');
+
 
                 if(file.type.startsWith('image/')){
                     const img = document.createElement('img');
@@ -172,8 +221,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     const video = document.createElement('video');
                     video.src = e.target.result;
                     video.controls = true;
-                    video.style.width = '150px';
+                    video.style.width = '100px';
                     video.style.height = '100px';
+                    video.style.objectFit = 'cover';
                     video.style.borderRadius = '8px';
                     el.appendChild(video);
                 }
@@ -190,7 +240,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 removeBtn.style.borderRadius = '50%';
                 removeBtn.style.padding = '2px 5px';
                 removeBtn.addEventListener('click', () => {
-                    selectedMedia = selectedMedia.filter(f=>f.name!==file.name || f.type!==file.type);
+                    const index = selectedMedia.indexOf(file);
+                    if (index > -1) selectedMedia.splice(index, 1);
                     updateMediaPreview();
                 });
 
@@ -251,8 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Workshop opslaan
     // =======================
     // =======================
-// Workshop opslaan (AANGEPAST)
-// =======================
+
     if(saveBtn){
         saveBtn.addEventListener('click', async () => {
             // Waarden uit de form ophalen
@@ -293,17 +343,17 @@ document.addEventListener('DOMContentLoaded', () => {
             ];
             formData.append('documentMeta', JSON.stringify(documentMeta));
 
-            // ===============================
-            // LOGGING VOOR DEBUG
-            // ===============================
-            console.log('📝 Workshop data om op te slaan:');
-            console.log('Naam:', name);
-            console.log('Beschrijving:', desc);
-            console.log('Duur:', duration);
-            console.log('Labels:', labels);
-            console.log('Hoofdafbeelding:', mainImage);
-            console.log('Media:', selectedMedia);
-            console.log('Documenten:', documentMeta);
+            // // ===============================
+            // // LOGGING VOOR DEBUG
+            // // ===============================
+            // console.log('📝 Workshop data om op te slaan:');
+            // console.log('Naam:', name);
+            // console.log('Beschrijving:', desc);
+            // console.log('Duur:', duration);
+            // console.log('Labels:', labels);
+            // console.log('Hoofdafbeelding:', mainImage);
+            // console.log('Media:', selectedMedia);
+            // console.log('Documenten:', documentMeta);
 
             try {
                 const headers = getAuthHeaders();
@@ -323,8 +373,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 console.log('📦 Response status:', response.status);
-                const responseData = await response.json();
-                console.log('📥 Response data:', responseData);
+                // const responseData = await response.json();
+                // console.log('📥 Response data:', responseData);
 
                 if (!response.ok) throw new Error('Fout bij opslaan workshop');
 
@@ -336,6 +386,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert(e.message);
             }
         });
+    }
+// =======================
+// Helper: duration formatter
+// =======================
+    function formatDuration(duration) {
+        if (!duration) return "00:00";
+
+        // Als het al in "HH:MM" formaat is, direct teruggeven
+        if (typeof duration === 'string' && duration.includes(':')) {
+            const parts = duration.split(':');
+            const hours = parts[0].padStart(2, '0');
+            const minutes = parts[1].padStart(2, '0');
+            return `${hours}:${minutes}`;
+        }
+
+        // Als het een getal is, zoals 1.5 → 01:30
+        const num = parseFloat(duration);
+        if (isNaN(num)) return "00:00";
+        const hours = Math.floor(num);
+        const minutes = Math.round((num - hours) * 60);
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
     }
 
     // =======================
@@ -360,9 +431,8 @@ document.addEventListener('DOMContentLoaded', () => {
             let imageUrl = firstImage ? firstImage.url : (w.imageUrl || '/image/default-workshop.png');
             card.style.backgroundImage = `url('${imageUrl}')`;
 
-            let hours = Math.floor(w.duration);
-            let minutes = Math.round((w.duration - hours) * 60);
-            let durationStr = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}`;
+            let durationStr = formatDuration(w.duration) + " uur";
+
 
             card.innerHTML = `
                 <div class="workshop-top">
@@ -403,9 +473,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('detailName').value = w.name;
             document.getElementById('detailDesc').value = w.description;
             const detailDuration = document.getElementById('detailDuration');
-            const hours = Math.floor(w.duration);
-            const minutes = Math.round((w.duration - hours)*60);
-            detailDuration.value = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}`;
+            detailDuration.value = formatDuration(w.duration);
+
 
             // Labels
             detailLabelPreview.innerHTML = '';
@@ -655,13 +724,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Toggle for create-popup file-categories as well (je had dit onderaan)
+    // =======================
+// Toggle categorieën (maar één tegelijk open)
+// =======================
     document.querySelectorAll('.file-category-header').forEach(header => {
         header.addEventListener('click', () => {
-            const content = header.nextElementSibling;
-            content.style.display = content.style.display === 'flex' ? 'none' : 'flex';
+            const allContents = document.querySelectorAll('.file-category-content');
+            const currentContent = header.nextElementSibling;
+
+            // Sluit alle andere categorieën
+            allContents.forEach(content => {
+                if (content !== currentContent) {
+                    content.style.display = 'none';
+                }
+            });
+
+            // Toggle de aangeklikte categorie
+            currentContent.style.display = currentContent.style.display === 'flex' ? 'none' : 'flex';
         });
     });
+
 // Lightbox functionaliteit
     const lightbox = document.getElementById('mediaLightbox');
     const lightboxImg = document.getElementById('lightboxImage');
