@@ -53,7 +53,8 @@ public class WorkshopController {
             @RequestParam(required = false) MultipartFile[] manualsFiles,
             @RequestParam(required = false) MultipartFile[] demoFiles,
             @RequestParam(required = false) MultipartFile[] worksheetsFiles,
-            @RequestParam(required = false) String labels
+            @RequestParam(required = false) String labels,
+            @RequestParam(defaultValue = "false") boolean parentalConsent
     ) throws IOException {
 
         Workshop workshop = service.saveWorkshop(
@@ -66,7 +67,8 @@ public class WorkshopController {
                 manualsFiles,
                 demoFiles,
                 worksheetsFiles,
-                labels
+                labels,
+                parentalConsent
         );
 
         return ResponseEntity.ok(toDTO(workshop));
@@ -104,6 +106,8 @@ public class WorkshopController {
         dto.setDescription(w.getDescription());
         dto.setDuration(w.getDuration());
         dto.setImageUrl(w.getImagePath());
+        dto.setParentalConsent(w.getParentalConsent());
+
 
         // Media files (images & video)
         dto.setFiles(w.getFiles() != null ? w.getFiles().stream()

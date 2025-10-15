@@ -102,6 +102,10 @@
                     <button id="addLabelBtn">➕</button>
                 </div>
                 <div id="labelPreview"></div>
+                <label style="margin-top:10px; display:flex; align-items:center; gap:8px;">
+                    <input type="checkbox" id="parentalConsent">
+                    <span>Oudertoestemming verleend (onder 16 jaar)</span>
+                </label>
 
                 <div class="popup-buttons">
                     <button class="btn-secondary" id="closePopupBtnCancel">Annuleren</button>
@@ -163,6 +167,8 @@
                 <label>Duur</label><input type="time" id="detailDuration" readonly>
                 <label>Labels</label><div id="detailLabelPreview"></div>
 
+                <label>Oudertoestemming</label>
+                <input type="checkbox" id="detailParentalConsent">
 
                 <div class="popup-buttons">
                     <button class="btn-primary" id="updateWorkshopBtn">Opslaan</button>

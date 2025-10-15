@@ -309,13 +309,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const name = document.getElementById('workshopName').value;
             const desc = document.getElementById('workshopDesc').value;
             const duration = document.getElementById('workshopDuration').value;
+            const parentalConsent = document.getElementById('parentalConsent').checked;
 
             const formData = new FormData();
             formData.append('name', name);
             formData.append('description', desc);
             formData.append('duration', duration);
-
-            // ✅ Labels toevoegen
+            formData.append("parentalConsent", parentalConsent);
             formData.append('labels', JSON.stringify(labels));
 
             // Hoofdafbeelding
@@ -343,17 +343,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ];
             formData.append('documentMeta', JSON.stringify(documentMeta));
 
-            // // ===============================
-            // // LOGGING VOOR DEBUG
-            // // ===============================
-            // console.log('📝 Workshop data om op te slaan:');
-            // console.log('Naam:', name);
-            // console.log('Beschrijving:', desc);
-            // console.log('Duur:', duration);
-            // console.log('Labels:', labels);
-            // console.log('Hoofdafbeelding:', mainImage);
-            // console.log('Media:', selectedMedia);
-            // console.log('Documenten:', documentMeta);
 
             try {
                 const headers = getAuthHeaders();
@@ -372,9 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 }
 
-                console.log('📦 Response status:', response.status);
-                // const responseData = await response.json();
-                // console.log('📥 Response data:', responseData);
+
 
                 if (!response.ok) throw new Error('Fout bij opslaan workshop');
 
@@ -382,7 +369,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 popup.style.display = 'none';
                 await loadWorkshops();
             } catch (e) {
-                console.error('❌ Fout bij opslaan workshop:', e);
                 alert(e.message);
             }
         });
@@ -482,16 +468,22 @@ document.addEventListener('DOMContentLoaded', () => {
             labelsArray.forEach(label => {
                 const span = document.createElement('span');
                 span.textContent = label.name;
+
+                // Laat CSS het meeste doen
                 span.style.backgroundColor = label.color;
-                span.style.border = '1px solid ' + label.color;
+                span.style.borderColor = label.color;
                 span.style.color = getContrastYIQ(label.color);
-                span.style.padding = '3px 8px';
-                span.style.borderRadius = '12px';
-                span.style.fontSize = '12px';
-                span.style.display = 'inline-block';
-                span.style.margin = '2px 2px 2px 0';
+
                 detailLabelPreview.appendChild(span);
             });
+
+            // Oudertoestemming
+            const detailParentalConsent = document.getElementById('detailParentalConsent');
+            detailParentalConsent.checked = w.parentalConsent || false;
+
+// Maak het niet disabled, maar voorkom interactie
+            detailParentalConsent.addEventListener('click', e => e.preventDefault());
+
 
             // Helper: categorie mapping
             function mapCategory(category){
@@ -789,4 +781,3 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-//BALABALAA

@@ -12,6 +12,7 @@ public class WorkshopDTO {
     private List<LabelDTO> labels;
     private List<String> reviews;
     private List<FileDTO> documents;
+    private Boolean parentalConsent;
 
     // Getters & setters
     public Long getId() { return id; }
@@ -40,4 +41,6 @@ public class WorkshopDTO {
 
     public List<FileDTO> getDocuments() { return documents; }
     public void setDocuments(List<FileDTO> documents) { this.documents = documents; }
+    public Boolean getParentalConsent() { return parentalConsent; } // getter
+    public void setParentalConsent(Boolean parentalConsent) { this.parentalConsent = parentalConsent; } // setter
 }

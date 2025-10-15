@@ -49,7 +49,8 @@ public class WorkshopService {
             MultipartFile[] manualsFiles,
             MultipartFile[] demoFiles,
             MultipartFile[] worksheetsFiles,
-            String labelsJson
+            String labelsJson,
+            boolean parentalConsent
     ) throws IOException {
 
         if (!Files.exists(uploadDir)) Files.createDirectories(uploadDir);
@@ -94,6 +95,7 @@ public class WorkshopService {
         w.setFiles(mediaPaths);           // Afbeeldingen + video
         w.setDocuments(documents);        // **Echte objecten**
         w.setLabelsJson(labelsJson != null ? labelsJson : "[]");
+        w.setParentalConsent(parentalConsent);
 
         return workshopRepository.save(w);
     }

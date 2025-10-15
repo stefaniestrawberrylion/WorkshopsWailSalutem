@@ -45,6 +45,8 @@ public class Workshop {
     @Column(columnDefinition = "TEXT")
     private String labelsJson;
 
+    @Column(name = "parental_consent", nullable = false)
+    private boolean parentalConsent = false;
 
     // ======= getters & setters =======
     public Long getId() { return id; }
@@ -77,5 +79,8 @@ public class Workshop {
     public void setDocuments(List<DocumentInfo> documents) { this.documents = documents; }
     public String getLabelsJson() { return labelsJson; }
     public void setLabelsJson(String labelsJson) { this.labelsJson = labelsJson; }
-
+    public Boolean getParentalConsent() { return parentalConsent; }
+    public void setParentalConsent(boolean parentalConsent) {
+        this.parentalConsent = parentalConsent;
+    }
 }

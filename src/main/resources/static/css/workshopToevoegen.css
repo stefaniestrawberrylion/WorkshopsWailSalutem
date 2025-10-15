@@ -1026,8 +1026,8 @@ main {
 /* stijl elk label */
 #labelPreview span,
 #detailLabelPreview span {
-    padding: 6px 10px;
-    border-radius: 6px;
+    padding: 8px 15px;
+    border-radius: 20px;
     color: white;
     font-weight: 600;
     display: inline-flex;
@@ -1100,4 +1100,42 @@ main {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+/* Oudertoestemming checkbox container */
+#workshopPopup label[for="parentalConsent"],
+#workshopPopup label input#parentalConsent {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+/* Maak de checkbox zelf wat groter en vriendelijker */
+#workshopPopup input#parentalConsent {
+    width: 20px;
+    height: 20px;
+    accent-color: #5481B7; /* past bij je labelkleur */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+}
+
+#workshopPopup input#parentalConsent:checked {
+    transform: scale(1.1);
+}
+
+/* Detail popup checkbox */
+#workshopDetailsPopup input#detailParentalConsent {
+    width: 20px;
+    height: 20px;
+    accent-color: #5481B7;
+    margin-top: 5px;
+}
+
+/* Tekst ernaast */
+#workshopPopup label span {
+    user-select: none;
 }
