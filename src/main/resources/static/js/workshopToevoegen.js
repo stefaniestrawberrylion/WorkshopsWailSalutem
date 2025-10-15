@@ -485,21 +485,7 @@ document.addEventListener('DOMContentLoaded', () => {
             detailParentalConsent.addEventListener('click', e => e.preventDefault());
 
 
-            // Helper: categorie mapping
-            function mapCategory(category){
-                if(!category) return 'worksheets';
-                category = category.toLowerCase();
-                switch(category){
-                    case 'instructions':
-                    case 'instructies': return 'instructions';
-                    case 'manuals':
-                    case 'handleiding': return 'manuals';
-                    case 'demo': return 'demo';
-                    case 'worksheets':
-                    case 'werkbladeren': return 'worksheets';
-                    default: return 'worksheets';
-                }
-            }
+
 
             // Clear bestaande lijsten
             detailInstructionsList.innerHTML = '';

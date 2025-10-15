@@ -67,7 +67,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers(antMatcher(POST, LOGIN_PATH)).permitAll()
 
                         // statische bestanden
-                        .requestMatchers("/", "/index.html", "/inlog", "/html/**", "/css/**", "/js/**", "/image/**").permitAll()
+                        .requestMatchers("/", "/index.html", "/inlog", "/html/**", "/css/**", "/js/**", "/image/**", "/components/**").permitAll()
                         .requestMatchers("/login").permitAll() // login endpoint open
                         .requestMatchers("/register/**").permitAll() // registraties
                         .requestMatchers("/admin/**").hasRole("ADMIN") // admin pagina's
