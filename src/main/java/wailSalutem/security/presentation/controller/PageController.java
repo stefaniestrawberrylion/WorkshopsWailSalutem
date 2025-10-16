@@ -13,23 +13,23 @@ public class PageController {
 
     @GetMapping("/toevoegen")
     public String showWorkshopToevoegen() {
-        return "forward:/html/workshopToevoegen.html";
+        return "forward:/html/admin/workshopToevoegen.html";
     }
 
     @GetMapping("/dashboard")
     public String showDashboard() {
-        return "forward:/html/dashboardAdmin.html";
+        return "forward:/html/admin/dashboardAdmin.html";
     }
     @GetMapping("/dashboardUser")
     public String showDashboardUser() {
-        return "forward:/html/dashboardUser.html";
+        return "forward:/html/user/dashboardUser.html";
     }
     @GetMapping("/workshopUser")
     public String showWorkshopUser() {
-        return "forward:/html/workshopUser.html";
+        return "forward:/html/user/workshopUser.html";
     }
     @GetMapping("/profielAdmin")
     public String showProfileAdmin() {
-        return "forward:/html/gebruikersProfiel.html";
+        return "forward:/html/admin/gebruikersProfiel.html";
     }
 }
