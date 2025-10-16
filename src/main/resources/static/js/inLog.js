@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    // ================== Panel Switching ==================
     const cardContainer = document.getElementById('cardContainer');
     const showEmailForm = document.getElementById('showEmailForm');
     const backToLogin = document.getElementById('backToLogin');
 
-    // Panel switching
     if (showEmailForm) {
         showEmailForm.addEventListener('click', () => {
             cardContainer.classList.add('show-email');
@@ -18,106 +19,142 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ================== Login ==================
     const loginBtn = document.querySelector(".login button");
+
     loginBtn.addEventListener("click", async () => {
-        const email = document.querySelector(".login input[type='email']").value;
+        const email = document.querySelector(".login input[type='email']").value.trim();
         const password = document.querySelector(".login input[type='password']").value;
 
-        const response = await fetch("http://localhost:8080/login", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({email, password})
-        });
-
-        if (response.ok) {
-            const token = response.headers.get("Authorization");
-            if (token) {
-                localStorage.setItem("jwt", token); // inclusief "Bearer "
-                window.location.href = "/html/workshopToevoegen.html";
-            }
-        } else {
-            alert("Login mislukt: " + response.status);
+        if (!email || !password) {
+            alert("Vul e-mail en wachtwoord in!");
+            return;
         }
-    });
-    async function fetchWorkshops() {
-        const token = localStorage.getItem("jwt");
-        const response = await fetch("http://localhost:8080/api/workshops", {
-            headers: { "Authorization": token }
-        });
 
-        if (response.ok) {
-            const workshops = await response.json();
-            console.log(workshops);
-        } else {
-            console.error("Failed", response.status);
-        }
-    }
-
-    fetchWorkshops();
-
-});
-
-
-//Registeren gebruiker
-
-document.addEventListener('DOMContentLoaded', () => {
-
-    // Login functionaliteit (zoals jij had)
-    const loginBtn = document.querySelector(".login button");
-    if (loginBtn) {
-        loginBtn.addEventListener("click", async () => {
-            const email = document.querySelector(".login input[type='email']").value;
-            const password = document.querySelector(".login input[type='password']").value;
-
+        try {
             const response = await fetch("http://localhost:8080/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password })
             });
 
-            if (response.ok) {
-                const token = response.headers.get("Authorization");
-                if (token) {
-                    localStorage.setItem("jwt", token);
-                    window.location.href = "/html/workshopToevoegen.html";
-                }
+            if (!response.ok) {
+                const data = await response.json();
+                alert("Login mislukt: " + (data.message || response.status));
+                return;
+            }
+
+            const tokenHeader = response.headers.get("Authorization");
+            if (!tokenHeader) {
+                alert("Geen token ontvangen!");
+                return;
+            }
+
+            const token = tokenHeader.replace("Bearer ", "");
+            localStorage.setItem("jwt", token);
+
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            console.log("JWT payload:", payload);
+
+            const roles = Array.isArray(payload.rol) ? payload.rol : [payload.rol];
+
+            if (roles.includes("ROLE_ADMIN")) {
+                window.location.href = "/dashboard";
+            } else if (roles.includes("ROLE_USER") || roles.includes("USER")) {
+                window.location.href = "/dashboardUser";
             } else {
-                alert("Login mislukt: " + response.status);
+                alert("Geen geldige rol gevonden!");
+            }
+
+        } catch (err) {
+            console.error("Fout bij inloggen:", err);
+            alert("Fout bij inloggen.");
+        }
+    });
+
+    // ================== Fetch Workshops (ADMIN alleen) ==================
+    async function fetchWorkshops() {
+        const token = localStorage.getItem("jwt");
+        if (!token) return;
+
+        try {
+            const response = await fetch("http://localhost:8080/api/workshops", {
+                headers: { "Authorization": "Bearer " + token }
+            });
+
+            if (response.ok) {
+                const workshops = await response.json();
+                console.log(workshops);
+            } else {
+                console.error("Failed fetching workshops", response.status);
+            }
+        } catch (err) {
+            console.error("Error fetching workshops:", err);
+        }
+    }
+
+    // ================== Registratie ==================
+    const sendEmailBtn = document.getElementById('sendEmail');
+    if (sendEmailBtn) {
+        sendEmailBtn.addEventListener('click', async () => {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const school = document.getElementById('school').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+
+            if (!email || !password || !firstName || !lastName || !school || !phone) {
+                alert("Vul alle velden in!");
+                return;
+            }
+
+            const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&*]).{12,}$/;
+            if (!pwdRegex.test(password)) {
+                alert("Wachtwoord voldoet niet aan de eisen! Minimaal 12 tekens, hoofdletter, kleine letter en speciaal teken.");
+                return;
+            }
+
+            const lowerPwd = password.toLowerCase();
+            if (lowerPwd.includes(firstName.toLowerCase()) || lowerPwd.includes(lastName.toLowerCase())) {
+                alert("Wachtwoord mag geen naam bevatten!");
+                return;
+            }
+
+            try {
+                const response = await fetch("http://localhost:8080/register/request", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password, firstName, lastName, school, phone })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert("Je aanvraag is verstuurd! De admin zal deze goedkeuren.");
+                } else {
+                    alert("Er is iets misgegaan: " + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Fout bij versturen van aanvraag.");
             }
         });
     }
 
-    // Registratie-aanvraag
-    const sendEmailBtn = document.getElementById('sendEmail');
-    sendEmailBtn.addEventListener('click', async () => {
-        const email = document.getElementById('email').value;
-        const firstName = document.getElementById('firstName').value;
-        const lastName = document.getElementById('lastName').value;
+    // ================== Toggle Password ==================
+    const togglePasswordBtn = document.querySelector(".toggle-password");
+    const passwordInput = document.getElementById("password");
 
-        if (!email || !firstName || !lastName) {
-            alert("Vul alle velden in!");
-            return;
-        }
-
-        try {
-            const response = await fetch("http://localhost:8080/register/request", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, firstName, lastName })
-            });
-
-            const data = await response.json();
-            if (data.success) {
-                alert("Je aanvraag is verstuurd! De opdrachtgever zal contact opnemen.");
+    if (togglePasswordBtn) {
+        togglePasswordBtn.addEventListener("click", () => {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                togglePasswordBtn.textContent = "🙈";
             } else {
-                alert("Er is iets misgegaan. Probeer later opnieuw.");
+                passwordInput.type = "password";
+                togglePasswordBtn.textContent = "👁️";
             }
+        });
+    }
 
-        } catch (error) {
-            console.error(error);
-            alert("Er is een fout opgetreden bij het versturen van de aanvraag.");
-        }
-    });
-
-});
-
+}); // einde DOMContentLoaded

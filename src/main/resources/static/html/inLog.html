@@ -21,12 +21,49 @@
     </div>
     <div class="email-input">
       <h2>Vraag account aan</h2>
-      <p>Voer je email in om een account aan te vragen</p>
-      <input type="email" id="email" placeholder="Email" required>
-      <input type="text" id="firstName" placeholder="Voornaam" required>
-      <input type="text" id="lastName" placeholder="Achternaam" required>
-      <button id="sendEmail">Versturen</button>
+      <p>Vul je gegevens in om een account aan te vragen</p>
+
+      <form id="registrationForm">
+        <div class="input-group">
+          <input
+                  type="email"
+                  id="email"
+                  name="user_email"
+                  placeholder="E-mailadres"
+                  required
+                  autocomplete="off"
+          />
+        </div>
+
+        <div class="input-group">
+          <input type="text" id="firstName" placeholder="Voornaam" required>
+          <input type="text" id="lastName" placeholder="Achternaam" required>
+        </div>
+
+        <div class="input-group">
+          <input type="text" id="school" placeholder="School" required>
+          <input type="text" id="phone" placeholder="Telefoonnummer" required>
+        </div>
+
+        <div class="input-group">
+          <input
+                  type="password"
+                  id="password"
+                  name="user_password"
+                  placeholder="Wachtwoord"
+                  autocomplete="new-password"
+                  autocapitalize="none"
+                  spellcheck="false"
+                  required
+          />
+          <button type="button" class="toggle-password">👁️</button>
+          <small>Minimaal 12 tekens, 1 hoofdletter, 1 kleine letter, 1 speciaal teken (!@#$%&*)</small>
+        </div>
+
+        <button type="button" id="sendEmail">Versturen</button>
+      </form>
     </div>
+
 
   </div>
 

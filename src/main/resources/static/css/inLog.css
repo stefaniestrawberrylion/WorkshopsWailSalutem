@@ -12,6 +12,7 @@ body {
     align-items: center;
     background: linear-gradient(135deg, #e0e0e0, #cfcfcf);
 }
+
 /* Topbar voor terugknop en logo */
 .top-bar {
     position: absolute;
@@ -39,13 +40,14 @@ body {
     color: #436c99;
 }
 
-
 /* Card container */
 .card-container {
     position: relative;
     width: 800px;
     max-width: 95%;
-    height: 500px;
+    height: auto;
+    min-height: 520px;
+    max-height: 90vh;
     border-radius: 20px;
     overflow: hidden;
     display: flex;
@@ -60,10 +62,24 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 3rem;
-    transition: all 0.8s cubic-bezier(0.77,0,0.175,1), z-index 0.8s;
+    padding: 2.5rem 2rem;
+    transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1), z-index 0.8s;
     position: relative;
     border-radius: 20px;
+    overflow-y: auto;
+    max-height: 90vh;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #f2f2f2;
+}
+
+.left::-webkit-scrollbar,
+.right::-webkit-scrollbar {
+    width: 6px;
+}
+.left::-webkit-scrollbar-thumb,
+.right::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+    border-radius: 6px;
 }
 
 /* Linker paneel */
@@ -98,7 +114,7 @@ p {
     color: white;
 }
 
-/* Inputs en knoppen */
+/* Algemene inputs en knoppen */
 input {
     margin: 0.7rem 0;
     padding: 0.8rem 1rem;
@@ -138,7 +154,7 @@ button {
     background: #f2f2f2;
 }
 
-/* Zorg dat alle panel-inhoud kolomsgewijs blijft */
+/* Inhoud in panelen */
 .login, .email-input, .default, .email-side {
     display: flex;
     flex-direction: column;
@@ -147,7 +163,7 @@ button {
     width: 100%;
 }
 
-/* Verberg email / extra info standaard */
+/* Verborgen secties standaard */
 .left .email-input,
 .right .email-side {
     display: none;
@@ -161,18 +177,29 @@ button {
     padding: 0 2rem;
 }
 
-/* Animatie: panelen wisselen met slide + diepte */
+/* Animatie: panelen wisselen */
 .card-container.show-email .left {
-    transform: translateX(100%) scale(0.95);
+    transform: translateX(100%) scale(1.05) rotateY(5deg);
     z-index: 1;
     box-shadow: 0 0 40px rgba(0,0,0,0.2);
 }
 .card-container.show-email .right {
-    transform: translateX(-100%) scale(1);
+    transform: translateX(-100%) scale(1.05) rotateY(-5deg);
     z-index: 2;
 }
 
-/* Toon juiste content na switch */
+/* Reset naar originele posities */
+.card-container.reset .left {
+    transform: translateX(0) scale(1) rotateY(0);
+    z-index: 2;
+}
+.card-container.reset .right {
+    transform: translateX(0) scale(1) rotateY(0);
+    z-index: 1;
+}
+
+
+/* Toon juiste content */
 .card-container.show-email .left .login {
     display: none;
 }
@@ -214,4 +241,106 @@ button {
 }
 .card-container.reset .right .email-side {
     display: none;
+}
+
+/* Formulier styling */
+.email-input form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-bottom: 1rem;
+}
+
+.input-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.input-group input {
+    flex: 1;
+    min-width: 120px;
+}
+
+/* Kleinere teksten */
+.email-input small {
+    font-size: 0.75rem;
+    color: #555;
+    text-align: center;
+    display: block;
+    margin-top: -0.5rem;
+}
+
+/* Button styling */
+.email-input button {
+    align-self: center;
+    background-color: #5481B7;
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+.email-input button:hover {
+    background-color: #436c99;
+}
+
+/* Responsief gedrag */
+@media (max-width: 850px) {
+    .card-container {
+        flex-direction: column;
+        width: 90%;
+        height: auto;
+        max-height: none;
+        perspective: none;
+    }
+
+    .panel {
+        width: 100%;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .left, .right {
+        transform: none !important;
+        z-index: auto !important;
+        max-height: none;
+    }
+
+    .card-container.show-email .left,
+    .card-container.show-email .right {
+        transform: none;
+    }
+
+    .email-input, .login, .info {
+        padding-bottom: 2rem;
+    }
+
+    .input-group {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    input {
+        max-width: 100%;
+    }
+}
+.password-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-group input {
+    flex: 1;
+    padding-right: 2rem; /* ruimte voor het oogje */
+}
+
+.password-group .toggle-password {
+    position: absolute;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
 }

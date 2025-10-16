@@ -1,11 +1,13 @@
 package wailSalutem.security.domain;
 
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.*;
+import wailSalutem.security.domain.Enum.Role;
+import wailSalutem.security.domain.Enum.Status;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -26,18 +28,29 @@ public class User implements UserDetails {
     private String firstName;
     private String lastName;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String role = "USER";
-    @Column(nullable = false)
-    private String status = "PENDING";
-    public User() { }
+    private Role role = Role.USER;
 
-    public User(String email, String password, String firstName, String lastName, String role) {
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status status = Status.PENDING;
+
+    @Column(nullable = false)
+    private String school;
+
+    @Column(nullable = false)
+    private String phone;
+
+    public User() {}
+
+    public User(String email, String password, String firstName, String lastName, Role role) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
+        this.status = Status.PENDING;
     }
 
     // Getters / setters
@@ -49,43 +62,38 @@ public class User implements UserDetails {
     public void setFirstName(String firstName) { this.firstName = firstName; }
     public String getLastName() { return lastName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
+    public Status getStatus() { return status; }
+    public void setStatus(Status status) { this.status = status; }
+    public String getSchool() { return school; }
+    public void setSchool(String school) { this.school = school; }
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+
     // UserDetails methods
     @Override
-    public String getUsername() {
-        return email;
-    }
+    public String getUsername() { return email; }
 
     @Override
-    public String getPassword() {
-        return password;
-    }
+    public String getPassword() { return password; }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role));
+        return List.of(new SimpleGrantedAuthority(this.role.name())); // role = Role.USER of Role.ADMIN
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
 
     @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+    public boolean isAccountNonExpired() { return true; }
 
     @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+    public boolean isAccountNonLocked() { return true; }
 
     @Override
-    public boolean isEnabled() {
-        return true;
-    }
+    public boolean isCredentialsNonExpired() { return true; }
+
+    @Override
+    public boolean isEnabled() { return true; }
+
 }

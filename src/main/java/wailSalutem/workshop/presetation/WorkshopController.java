@@ -26,7 +26,6 @@ public class WorkshopController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public List<WorkshopDTO> getAllWorkshops() {
         return service.getAllWorkshops().stream()
                 .map(this::toDTO)
@@ -35,7 +34,6 @@ public class WorkshopController {
 
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public WorkshopDTO getWorkshop(@PathVariable Long id) {
         Workshop w = service.getWorkshop(id);
         return toDTO(w);

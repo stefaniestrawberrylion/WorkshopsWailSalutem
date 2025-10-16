@@ -68,10 +68,11 @@ public class SecurityConfig implements WebMvcConfigurer {
 
                         // statische bestanden
                         .requestMatchers("/", "/index.html", "/inlog", "/html/**", "/css/**", "/js/**", "/image/**", "/components/**").permitAll()
-                        .requestMatchers("/login").permitAll() // login endpoint open
-                        .requestMatchers("/register/**").permitAll() // registraties
-                        .requestMatchers("/admin/**").hasRole("ADMIN") // admin pagina's
+                        .requestMatchers("/login", "/dashboard", "/toevoegen", "/dashboardUser", "workshopUser", "/profielAdmin").permitAll() // login endpoint open
+                        .requestMatchers("/register/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/register").permitAll()
+                        .requestMatchers("/dashboardUser").hasAuthority("USER")
                         .requestMatchers("/uploads/**").permitAll()
                         .requestMatchers("/register/request").permitAll()
                         .requestMatchers("/error").anonymous()
