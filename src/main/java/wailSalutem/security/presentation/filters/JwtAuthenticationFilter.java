@@ -56,27 +56,25 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain filterChain, Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
 
-        List<String> roles = user.getAuthorities().stream()
+        // Gebruik UserDetails in plaats van User
+        var userDetails = (org.springframework.security.core.userdetails.UserDetails) authentication.getPrincipal();
+
+        List<String> roles = userDetails.getAuthorities().stream()
                 .map(a -> {
                     String r = a.getAuthority();
-                    if(!r.startsWith("ROLE_")) return "ROLE_" + r;
+                    if (!r.startsWith("ROLE_")) return "ROLE_" + r;
                     return r;
                 })
                 .toList();
-
 
         String token = Jwts.builder()
                 .header().add("typ", "JWT").and()
                 .issuer("wailsalutem-workshops")
                 .audience().add("wailsalutem").and()
-                .subject(user.getUsername())
+                .subject(userDetails.getUsername())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .claim("rol", roles)
-                .claim("email", user.getEmail())
-                .claim("firstName", user.getFirstName())
-                .claim("lastName", user.getLastName())
                 .signWith(signingKey)
                 .compact();
 

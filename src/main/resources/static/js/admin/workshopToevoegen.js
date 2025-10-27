@@ -43,6 +43,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedMedia = [];
     let selectedFiles = [];
 
+
+    let selectedInstructions = [];
+    let selectedManuals = [];
+    let selectedDemo = [];
+    let selectedWorksheets = [];
+
+
     // =======================
     // Helper: Authorization header
     // =======================
@@ -157,21 +164,50 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const instructionsInput = document.getElementById('instructionsInput');
+    const manualsInput = document.getElementById('manualsInput');
+    const demoInput = document.getElementById('demoInput');
+    const worksheetsInput = document.getElementById('worksheetsInput');
 
-    // =======================
-    // Documenten selecteren
-    // =======================
-    if(workshopFilesInput){
-        workshopFilesInput.addEventListener('change', e => {
+    function handleCategoryFiles(input, array) {
+        if(!input) return;
+        input.addEventListener('change', e => {
             const files = Array.from(e.target.files);
             files.forEach(file => {
-                if(!selectedFiles.some(f => f.name === file.name)) {
-                    selectedFiles.push(file);
+                if(!array.some(f => f.name === file.name)) {
+                    array.push(file);
                 }
             });
-            updateFilesPreview();
+            updateCategoryPreview(array, input.dataset.previewId);
+            input.value = ''; // reset input
         });
     }
+    function updateCategoryPreview(array, previewId) {
+        const container = document.getElementById(previewId);
+        if(!container) return;
+        container.innerHTML = '';
+
+        array.forEach((file, idx) => {
+            const li = document.createElement('li');
+            li.textContent = file.name;
+
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = '✖';
+            removeBtn.addEventListener('click', () => {
+                array.splice(idx, 1);
+                updateCategoryPreview(array, previewId);
+            });
+
+            li.appendChild(removeBtn);
+            container.appendChild(li);
+        });
+    }
+
+    handleCategoryFiles(instructionsInput, selectedInstructions);
+    handleCategoryFiles(manualsInput, selectedManuals);
+    handleCategoryFiles(demoInput, selectedDemo);
+    handleCategoryFiles(worksheetsInput, selectedWorksheets);
+
 
     // =======================
     // Labels toevoegen
@@ -325,23 +361,20 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedMedia.forEach(file => formData.append('media', file));
 
             // Documenten per categorie
-            const instructionsFiles = document.getElementById('instructionsInput')?.files || [];
-            const manualsFiles = document.getElementById('manualsInput')?.files || [];
-            const demoFiles = document.getElementById('demoInput')?.files || [];
-            const worksheetsFiles = document.getElementById('worksheetsInput')?.files || [];
+            selectedInstructions.forEach(f => formData.append('instructionsFiles', f));
+            selectedManuals.forEach(f => formData.append('manualsFiles', f));
+            selectedDemo.forEach(f => formData.append('demoFiles', f));
+            selectedWorksheets.forEach(f => formData.append('worksheetsFiles', f));
 
-            [...instructionsFiles].forEach(f => formData.append('instructionsFiles', f));
-            [...manualsFiles].forEach(f => formData.append('manualsFiles', f));
-            [...demoFiles].forEach(f => formData.append('demoFiles', f));
-            [...worksheetsFiles].forEach(f => formData.append('worksheetsFiles', f));
 
             const documentMeta = [
-                ...[...instructionsFiles].map(f => ({ name: f.name, category: 'instructions' })),
-                ...[...manualsFiles].map(f => ({ name: f.name, category: 'manuals' })),
-                ...[...demoFiles].map(f => ({ name: f.name, category: 'demo' })),
-                ...[...worksheetsFiles].map(f => ({ name: f.name, category: 'worksheets' })),
+                ...selectedInstructions.map(f => ({ name: f.name, category: 'instructions' })),
+                ...selectedManuals.map(f => ({ name: f.name, category: 'manuals' })),
+                ...selectedDemo.map(f => ({ name: f.name, category: 'demo' })),
+                ...selectedWorksheets.map(f => ({ name: f.name, category: 'worksheets' })),
             ];
             formData.append('documentMeta', JSON.stringify(documentMeta));
+
 
 
             try {

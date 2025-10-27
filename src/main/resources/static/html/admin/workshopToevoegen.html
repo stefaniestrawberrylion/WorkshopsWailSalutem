@@ -52,11 +52,11 @@
 
 
                 <!-- Nieuwe dropdown structuur met juiste id's -->
-                <div class="file-category" data-category="instructions">
+                    <div class="file-category" data-category="instructions">
                     <div class="file-category-header">Instructies <i class="fa fa-chevron-down"></i></div>
                     <div class="file-category-content">
                         <div class="file-upload">
-                            <input type="file" multiple class="file-input" data-type="instructions" id="instructionsInput">
+                            <input type="file" multiple class="file-input" data-type="instructions" id="instructionsInput" data-preview-id="instructionsList">
                         </div>
                         <ul class="category-file-list" id="instructionsList"></ul>
                     </div>
@@ -66,7 +66,7 @@
                     <div class="file-category-header">Handleiding <i class="fa fa-chevron-down"></i></div>
                     <div class="file-category-content">
                         <div class="file-upload">
-                            <input type="file" multiple class="file-input" data-type="manuals" id="manualsInput">
+                            <input type="file" multiple class="file-input" data-type="manuals" id="manualsInput" data-preview-id="manualsList">
                         </div>
                         <ul class="category-file-list" id="manualsList"></ul>
                     </div>
@@ -76,7 +76,7 @@
                     <div class="file-category-header">Demo code <i class="fa fa-chevron-down"></i></div>
                     <div class="file-category-content">
                         <div class="file-upload">
-                            <input type="file" multiple class="file-input" data-type="demo" id="demoInput">
+                            <input type="file" multiple class="file-input" data-type="demo" id="demoInput" data-preview-id="demoList">
                         </div>
                         <ul class="category-file-list" id="demoList"></ul>
                     </div>
@@ -86,7 +86,7 @@
                     <div class="file-category-header">Werkbladeren <i class="fa fa-chevron-down"></i></div>
                     <div class="file-category-content">
                         <div class="file-upload">
-                            <input type="file" multiple class="file-input" data-type="worksheets" id="worksheetsInput">
+                            <input type="file" multiple class="file-input" data-type="worksheets" id="worksheetsInput" data-preview-id="worksheetsList">
                         </div>
                         <ul class="category-file-list" id="worksheetsList"></ul>
                     </div>
@@ -95,7 +95,7 @@
 
             <div class="popup-right">
                 <label>Naam</label><input type="text" id="workshopName">
-                <label>Omschrijving</label><textarea id="workshopDesc"></textarea>
+                <label>Omschrijving</label><textarea id="workshopDesc" rows="9" cols="40"></textarea>
                 <label>Duur</label><input type="time" id="workshopDuration" step="60">
 
                 <label>Labels</label>
@@ -166,7 +166,7 @@
             </div>
             <div class="popup-right">
                 <label>Naam</label><input type="text" id="detailName" readonly>
-                <label>Omschrijving</label><textarea id="detailDesc" readonly></textarea>
+                <label>Omschrijving</label><textarea id="detailDesc" rows="9" cols="40" readonly></textarea>
                 <label>Duur</label><input type="time" id="detailDuration" readonly>
                 <label>Labels</label><div id="detailLabelPreview"></div>
 

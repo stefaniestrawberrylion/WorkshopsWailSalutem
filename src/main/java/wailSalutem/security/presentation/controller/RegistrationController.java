@@ -4,6 +4,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import wailSalutem.security.application.AdminService;
 import wailSalutem.security.application.UserService;
 import wailSalutem.security.domain.Enum.Status;
 
@@ -15,9 +16,11 @@ import java.util.Map;
 public class RegistrationController {
 
     private final UserService userService;
+    private final AdminService adminService;
 
-    public RegistrationController(UserService userService) {
+    public RegistrationController(UserService userService, AdminService adminService) {
         this.userService = userService;
+        this.adminService = adminService;
     }
 
     // ================== REGISTRATIE ==================
@@ -41,18 +44,18 @@ public class RegistrationController {
     @PostMapping("/admin")
     public ResponseEntity<?> registerAdmin(@RequestBody Map<String, String> body) {
         try {
-            userService.register(
+            adminService.registerAdmin(
                     body.get("email"),
                     body.get("password"),
                     body.get("firstName"),
-                    body.get("lastName"),
-                    wailSalutem.security.domain.Enum.Role.ADMIN
+                    body.get("lastName")
             );
             return ResponseEntity.ok(Map.of("message", "Admin geregistreerd"));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
         }
     }
+
 
     @PostMapping("/request")
     public ResponseEntity<?> registerRequest(@RequestBody Map<String, String> body) {

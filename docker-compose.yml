@@ -1,25 +1,31 @@
 services:
+  db:
+    image: mysql:8.1
+    restart: always
+    environment:
+      MYSQL_DATABASE: workshops
+      MYSQL_ROOT_PASSWORD: example
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
   app:
     build: .
-    ports:
-      - "8080:8080"
+    restart: always
     depends_on:
       - db
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:15432/workshops
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=example
-
-  db:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: mydb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: example
     ports:
-      - "15432:5432"
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/workshops?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: example
+    command: >
+      sh -c "echo 'Waiting for MySQL...' &&
+             until nc -z db 3306; do sleep 3; done &&
+             echo 'MySQL is up! Starting app...' &&
+             java -jar app.jar"
 
 volumes:
-  postgres-data:
+  mysql-data:

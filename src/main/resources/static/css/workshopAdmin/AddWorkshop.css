@@ -302,3 +302,18 @@
     flex-direction: column;
     gap: 5px;
 }
+.category-file-list li {
+     display: flex;
+     align-items: center;
+     justify-content: space-between; /* spreidt left en right */
+     padding: 6px 8px;
+     border: 1px solid #e1e1e1;
+     border-radius: 6px;
+     margin-bottom: 6px;
+     background: #fff;
+ }
+
+.category-file-list li .remove-btn,
+.category-file-list li button {
+    margin-left: auto; /* duwt knop helemaal naar rechts */
+}

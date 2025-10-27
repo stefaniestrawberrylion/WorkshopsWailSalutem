@@ -2,27 +2,34 @@ package wailSalutem.security.application;
 
 import jakarta.transaction.Transactional;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import wailSalutem.security.data.AdminRepository;
 import wailSalutem.security.data.UserRepository;
+import wailSalutem.security.domain.Admin;
 import wailSalutem.security.domain.Enum.Role;
 import wailSalutem.security.domain.Enum.Status;
 import wailSalutem.security.domain.User;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
-public class UserService implements org.springframework.security.core.userdetails.UserDetailsService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AdminRepository adminRepository;
 
     public UserService(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       AdminRepository adminRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.adminRepository = adminRepository;
     }
 
     /**
@@ -84,9 +91,13 @@ public class UserService implements org.springframework.security.core.userdetail
      */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<Admin> admin = adminRepository.findByEmail(email);
+        if(admin.isPresent()) return (UserDetails) admin.get();
+
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Gebruiker niet gevonden: " + email));
     }
+
     /**
      * Controleert of het ingevoerde wachtwoord overeenkomt met het gehashte wachtwoord van de gebruiker.
      */

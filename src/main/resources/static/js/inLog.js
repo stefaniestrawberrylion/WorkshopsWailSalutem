@@ -149,10 +149,10 @@ document.addEventListener('DOMContentLoaded', () => {
         togglePasswordBtn.addEventListener("click", () => {
             if (passwordInput.type === "password") {
                 passwordInput.type = "text";
-                togglePasswordBtn.textContent = "🙈";
+                togglePasswordBtn.textContent = "🔒";
             } else {
                 passwordInput.type = "password";
-                togglePasswordBtn.textContent = "👁️";
+                togglePasswordBtn.textContent = "🔓";
             }
         });
     }
